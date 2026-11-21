@@ -2,8 +2,13 @@ name: daily-viral-monitor
 
 on:
   schedule:
-    - cron: "7 23 * * *"     # 매일 08:07 (한국시간)
+    - cron: "7 23 * * *"     # 매일 08:07 (한국시간) - 유튜브 매일, 나머지는 월요일만
   workflow_dispatch:          # Actions 탭에서 수동 실행 버튼
+    inputs:
+      run_all:
+        description: "인스타·틱톡·스레드도 지금 수집 (Apify 비용 발생)"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -25,12 +30,13 @@ jobs:
           X_BEARER_TOKEN: ${{ secrets.X_BEARER_TOKEN }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: python monitor.py
+        run: python monitor.py ${{ inputs.run_all && '--all' || '' }}
       - name: 결과 저장
         if: always()
         run: |
           git config user.name "viral-monitor-bot"
           git config user.email "actions@users.noreply.github.com"
+          git pull --rebase || true
           git add data reports
           git commit -m "report $(TZ=Asia/Seoul date +%F)" || echo "변경 없음"
           git push
