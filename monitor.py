@@ -441,7 +441,7 @@ def build_candidates(items, cfg, now):
 
     L = [f"# 스레드 글감 후보 ({REGION_NAME.get(region, region)}) · {now:%Y-%m-%d %H:%M} 기준",
          "", "## A. 여러 채널이 막 다루기 시작한 주제 (글감 1순위)", ""]
-    for c in small[: tc.get("max_clusters", 40)]:
+    for c in small[: tc.get("max_clusters", 30)]:
         its = sorted(c["items"], key=lambda i: -i["likes"])
         rs = [r for r in (ratio(i) for i in its) if r]
         newest = max((i["published"] for i in its if i.get("published")), default=None)
@@ -450,20 +450,21 @@ def build_candidates(items, cfg, now):
                  + (f" · 평균 좋아요비율 {sum(rs) / len(rs) * 100:.1f}%" if rs else "")
                  + (f" · 최신 {newest.astimezone(KST):%m/%d}" if newest else ""))
         for i in its[:3]:
-            L.append(f"- {i['title'][:55]} ({i['author']}, ❤️{fmt(i['likes'])})")
+            L.append(f"- {i['title'][:55]} ({i['author']}, ❤️{fmt(i['likes'])}) {i['url']}")
         L.append("")
     fans = [i for i in pool if (ratio(i) or 0) >= 0.05 and (i.get("views") or 0) >= 100000]
     fans.sort(key=lambda i: -ratio(i))
     L += ["## B. 좋아요 비율이 유난히 높은 영상 (팬덤 결집, 5% 이상 · 가중치 낮게)", ""]
-    L += [f"- {i['title'][:70]} ({i['author']}, ❤️{fmt(i['likes'])}, 비율 {ratio(i) * 100:.1f}%)" for i in fans[:8]]
+    L += [f"- {i['title'][:55]} ({i['author']}, ❤️{fmt(i['likes'])}, 비율 {ratio(i) * 100:.1f}%) {i['url']}"
+          for i in fans[:8]]
     crowded.sort(key=lambda c: -len(c["chans"]))
     L += ["", "## C. 큰 주제 (대형 이벤트·많은 채널 · 가중치 낮게, 새로운 생활형 각도가 있을 때만)", ""]
     for c in crowded[:10]:
         its = sorted(c["items"], key=lambda i: -i["likes"])
         L.append(f"### {' / '.join(c['keys'][:3])} — 채널 {len(c['chans'])}곳 · 영상 {len(its)}개 · "
                  f"좋아요 합 {fmt(sum(i['likes'] for i in its))}")
-        for i in its[:3]:
-            L.append(f"- {i['title'][:55]} ({i['author']}, ❤️{fmt(i['likes'])})")
+        for i in its[:2]:
+            L.append(f"- {i['title'][:55]} ({i['author']}, ❤️{fmt(i['likes'])}) {i['url']}")
         L.append("")
     if not crowded:
         L.append("-")
