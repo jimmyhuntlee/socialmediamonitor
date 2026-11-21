@@ -112,14 +112,20 @@ def normalize(platform, raw):
 
 # ─────────────────────────── Apify 공통 ───────────────────────────
 
+APIFY_MAX_USD = None
+
+
 def run_apify(actor, actor_input, max_wait=900):
     """Apify 수집기를 실행하고 끝날 때까지 기다린 뒤 결과를 가져옴 (최대 15분)"""
     token = os.getenv("APIFY_TOKEN")
     if not token:
         raise RuntimeError("APIFY_TOKEN 환경변수가 없습니다")
     api = "https://api.apify.com/v2"
+    params = {"token": token, "waitForFinish": 60}
+    if APIFY_MAX_USD:  # 수집기 1회 실행 비용 상한 (넘으면 Apify가 자동 중단)
+        params["maxTotalChargeUsd"] = APIFY_MAX_USD
     r = requests.post(f"{api}/acts/{actor.replace('/', '~')}/runs",
-                      params={"token": token, "waitForFinish": 60}, json=actor_input, timeout=90)
+                      params=params, json=actor_input, timeout=90)
     if r.status_code >= 400:
         raise RuntimeError(f"Apify 실행 실패 ({r.status_code}): {r.text[:200]}")
     run = r.json()["data"]
@@ -130,6 +136,7 @@ def run_apify(actor, actor_input, max_wait=900):
         r.raise_for_status()
         run = r.json()["data"]
         waited += 60
+        log(f"  {actor}: 수집 중... {waited // 60}분 경과")
     if run["status"] in ("READY", "RUNNING"):
         requests.post(f"{api}/actor-runs/{run['id']}/abort", params={"token": token}, timeout=30)
         log(f"  {actor}: {max_wait // 60}분 초과 → 중단하고 그때까지 모인 결과만 사용")
@@ -304,6 +311,61 @@ def save_history(hist):
     (ROOT / "data" / "history.json").write_text(json.dumps(hist, ensure_ascii=False, indent=1), "utf-8")
 
 
+def save_cache(platform, items, now):
+    (ROOT / "data").mkdir(exist_ok=True)
+    rows = [{**i, "published": i["published"].isoformat() if i["published"] else None} for i in items]
+    (ROOT / "data" / f"cache_{platform}.json").write_text(
+        json.dumps({"fetched_at": now.isoformat(), "items": rows}, ensure_ascii=False), "utf-8")
+
+
+def load_cache(platform):
+    f = ROOT / "data" / f"cache_{platform}.json"
+    if not f.exists():
+        return None, []
+    d = json.loads(f.read_text("utf-8"))
+    fetched = datetime.fromisoformat(d["fetched_at"])
+    items = []
+    for i in d["items"]:
+        i["published"] = parse_time(i["published"])
+        i["cached_at"] = fetched
+        items.append(i)
+    return fetched, items
+
+
+WEEKDAY = "월화수목금토일"
+
+
+def build_schedule_notes(cfg, status, now, demo=False):
+    """리포트 상단 '수집 주기' 안내 문구"""
+    run_hour = 8
+    wd = cfg.get("weekly_day", 0)
+    daily = [p for p in PLATFORMS if cfg.get(p, {}).get("enabled") and cfg[p].get("frequency", "daily") != "weekly"]
+    weekly = [p for p in PLATFORMS if cfg.get(p, {}).get("enabled") and cfg[p].get("frequency") == "weekly"]
+    if demo:
+        status = {p: {"weekly": p in weekly, "last": now, "failed": False} for p in daily + weekly}
+    lines = []
+    if daily:
+        failed = [p for p in daily if status.get(p, {}).get("failed")]
+        state = "오늘 수집" if not failed else "오늘 수집 실패: " + ", ".join(PLATFORM_LABEL[p] for p in failed)
+        lines.append(f"{' · '.join(PLATFORM_LABEL[p] for p in daily)}: 매일 {run_hour:02d}시 수집 ({state})")
+    if weekly:
+        days_ahead = (wd - now.weekday()) % 7 or 7
+        nxt = now + timedelta(days=days_ahead)
+        groups = {}   # 마지막 수집일이 같은 플랫폼끼리 묶기
+        for p in weekly:
+            st = status.get(p, {})
+            last = st.get("last")
+            key = ("실패 · " if st.get("failed") else "") + (f"마지막 {last:%m/%d}" if last else "첫 수집 예정")
+            groups.setdefault(key, []).append(p)
+        for key, ps in groups.items():
+            lines.append(f"{' · '.join(PLATFORM_LABEL[p] for p in ps)}: 매주 {WEEKDAY[wd]}요일 수집 "
+                         f"({key} · 다음 {nxt:%m/%d})")
+    lang = "한국어 " if cfg.get("korean_only") else ""
+    lines.append(f"기준: 최근 {cfg.get('lookback_days', 7)}일 안에 올라온 {lang}콘텐츠 중 "
+                 f"좋아요 {cfg.get('min_likes', 1000):,}개 이상")
+    return lines
+
+
 def fmt(n):
     if n is None:
         return "-"
@@ -322,7 +384,7 @@ def write_csv(items, path):
                         it["title"], it["author"], pub, "Y" if it["is_new"] else "", it["url"]])
 
 
-def write_html(items, path, now, errors):
+def write_html(items, path, now, errors, notes=None):
     counts = {p: sum(1 for i in items if i["platform"] == p) for p in PLATFORMS}
     rows = []
     for it in items:
@@ -356,10 +418,13 @@ th{{background:#fafaf8;font-weight:600;cursor:pointer;white-space:nowrap}}
 .youtube{{background:#d93025}} .x{{background:#111}} .instagram{{background:#c13584}}
 .tiktok{{background:#25a3a3}} .threads{{background:#555}}
 .new{{font-size:10px;color:#d93025;margin-left:4px}}
+.info{{background:#fff;border:1px solid #e4e4de;padding:12px 16px;border-radius:8px;font-size:13px;margin-bottom:12px;line-height:1.7}}
+.info ul,.err ul{{margin:4px 0 0;padding-left:18px}}
 .err{{background:#fff4e5;border:1px solid #f0d3a8;padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:14px}}
 </style></head><body><main>
-<h1>한국 바이럴 콘텐츠 · 좋아요 {CFG_MIN:,}+</h1>
+<h1>한국 바이럴 콘텐츠 · 최근 {CFG_DAYS}일 · 좋아요 {CFG_MIN:,}+</h1>
 <div class="sub">{now:%Y년 %m월 %d일 %H:%M} 기준 · 총 {len(items)}건 · 신규 {sum(i['is_new'] for i in items)}건</div>
+{('<div class="info"><b>수집 주기</b><ul>' + "".join(f"<li>{html.escape(n)}</li>" for n in notes) + '</ul></div>') if notes else ''}
 {f'<div class="err">일부 플랫폼 수집 실패<ul>{err_html}</ul></div>' if errors else ''}
 <div class="bar"><button class="on" data-f="all">전체 {len(items)}</button>{buttons}
 <button data-f="new">신규만</button></div>
@@ -396,21 +461,25 @@ def send_telegram(items, top_n, now):
 # ─────────────────────────── 메인 ───────────────────────────
 
 CFG_MIN = 1000
+CFG_DAYS = 7
 
 
 def main():
-    global CFG_MIN
+    global CFG_MIN, CFG_DAYS, APIFY_MAX_USD
     ap = argparse.ArgumentParser()
     ap.add_argument("--demo", action="store_true", help="API 없이 샘플 데이터로 실행")
     ap.add_argument("--config", default=str(ROOT / "config.yaml"))
+    ap.add_argument("--all", action="store_true", help="주 1회 플랫폼도 오늘 강제로 수집")
     args = ap.parse_args()
 
     cfg = yaml.safe_load(Path(args.config).read_text("utf-8"))
     CFG_MIN = min_likes = cfg.get("min_likes", 1000)
+    CFG_DAYS = cfg.get("lookback_days", 7)
+    APIFY_MAX_USD = cfg.get("apify_max_usd_per_run")
     now = datetime.now(KST)
     since = (now - timedelta(days=cfg.get("lookback_days", 2))).astimezone(timezone.utc)
 
-    collected, errors = [], {}
+    collected, errors, status = [], {}, {}
     if args.demo:
         collected = demo_items(now)
     else:
@@ -421,24 +490,46 @@ def main():
             "tiktok": lambda c: fetch_tiktok(c, since),
             "threads": lambda c: fetch_threads(c, since),
         }
+        weekly_day = cfg.get("weekly_day", 0)   # 0=월요일 (한국시간)
         for p, fn in fetchers.items():
             pc = cfg.get(p, {})
             if not pc.get("enabled"):
                 continue
+            weekly = pc.get("frequency", "daily") == "weekly"
+            cached_at, cached = load_cache(p) if weekly else (None, [])
+            due = (not weekly) or args.all or now.weekday() == weekly_day
+            if not due and cached_at is None:   # 아직 수집 기록 없음 → 비용 아끼려 다음 수집일까지 대기
+                status[p] = {"weekly": True, "last": None, "failed": False}
+                log(f"{PLATFORM_LABEL[p]}: 수집 요일 아님 → 건너뜀")
+                continue
+            if not due:
+                collected += cached
+                status[p] = {"weekly": True, "last": cached_at, "failed": False}
+                log(f"{PLATFORM_LABEL[p]}: 이번 주 수집분 사용 ({cached_at:%m/%d})")
+                continue
             try:
+                log(f"{PLATFORM_LABEL[p]}: 수집 시작")
                 got = fn(pc)
                 log(f"{PLATFORM_LABEL[p]}: {len(got)}건 수집")
                 collected += got
+                if weekly:
+                    keep = [g for g in got if (g["likes"] or 0) >= min_likes]
+                    save_cache(p, keep, now)
+                status[p] = {"weekly": weekly, "last": now, "failed": False}
             except Exception as e:  # 한 플랫폼이 실패해도 나머지는 계속
                 errors[p] = str(e)[:200]
                 log(f"{PLATFORM_LABEL[p]}: 실패 - {e}")
+                status[p] = {"weekly": weekly, "last": cached_at, "failed": True}
+                if cached:
+                    collected += cached
 
     # 필터: 좋아요 기준, 기간, 한국어
     items, seen_ids = [], set()
     for it in collected:
         if it["id"] in seen_ids or (it["likes"] or 0) < min_likes:
             continue
-        if it["published"] and it["published"] < since:
+        ref = (it["cached_at"] - timedelta(days=cfg.get("lookback_days", 7))) if it.get("cached_at") else since
+        if it["published"] and it["published"] < ref:
             continue
         if cfg.get("korean_only") and not it.get("korean_checked") and not args.demo \
                 and not HANGUL.search(it["title"] + it["author"]):
@@ -458,12 +549,14 @@ def main():
     if not args.demo:
         save_history(hist)
 
+    notes = build_schedule_notes(cfg, status, now, args.demo)
+
     out = ROOT / "reports"
     out.mkdir(exist_ok=True)
     stamp = f"{now:%Y-%m-%d}" + ("-demo" if args.demo else "")
     write_csv(items, out / f"{stamp}.csv")
-    write_html(items, out / f"{stamp}.html", now, errors)
-    write_html(items, out / "index.html", now, errors)   # 항상 최신본
+    write_html(items, out / f"{stamp}.html", now, errors, notes)
+    write_html(items, out / "index.html", now, errors, notes)   # 항상 최신본
     log(f"리포트 저장: reports/{stamp}.html ({len(items)}건)")
 
     if cfg.get("telegram", {}).get("enabled") and not args.demo:
