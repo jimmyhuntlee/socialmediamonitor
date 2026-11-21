@@ -1,0 +1,52 @@
+# ─────────────────────────────────────────────
+#  한국 바이럴 콘텐츠 모니터 설정
+# ─────────────────────────────────────────────
+
+min_likes: 1000          # 이 좋아요 수 이상만 리포트에 포함
+lookback_days: 2         # 최근 며칠 안에 올라온 콘텐츠만 볼지
+korean_only: true        # 본문/제목에 한글이 있는 콘텐츠만 (유튜브 제외: 지역 필터 사용)
+
+# ── 유튜브 (공식 API, 무료) ──────────────────
+youtube:
+  enabled: true
+  trending_pages: 4      # 한국 인기 급상승 50개 x 4페이지 = 200개 (페이지당 1유닛)
+  search_queries:        # 검색 1회 = 100유닛 (무료 한도: 하루 10,000유닛)
+    - ""                 # 빈 검색어 = 한국 지역 전체에서 조회수순
+    - "쇼츠"
+  search_max_results: 50
+
+# ── X / 트위터 ───────────────────────────────
+# provider: apify  → min_faves:1000 연산자로 조건 맞는 글만 받아서 저렴
+# provider: official → X 공식 API (게시물 1건당 $0.005, 1회 최대 100건 = $0.5)
+x:
+  enabled: true
+  provider: apify
+  apify_actor: "apidojo/tweet-scraper"
+  max_items: 100
+  official_query: "lang:ko -is:retweet -is:reply"
+
+# ── 인스타그램 (Apify) ───────────────────────
+instagram:
+  enabled: true
+  apify_actor: "apify/instagram-hashtag-scraper"
+  hashtags: ["일상", "데일리", "맛집", "먹스타그램", "패션", "뷰티", "여행", "릴스", "꿀팁", "밈"]
+  results_per_hashtag: 20
+
+# ── 틱톡 (Apify) ─────────────────────────────
+tiktok:
+  enabled: true
+  apify_actor: "clockworks/tiktok-scraper"
+  hashtags: ["추천", "추천떠라", "fyp한국", "한국", "일상", "먹방", "챌린지", "밈"]
+  results_per_hashtag: 20
+
+# ── 스레드 (Apify) ───────────────────────────
+threads:
+  enabled: true
+  apify_actor: "futurizerush/meta-threads-scraper"
+  keywords: ["오늘", "진짜", "근데", "ㅋㅋㅋ", "요즘", "한국"]
+  max_posts_per_keyword: 30
+
+# ── 알림 (선택) ──────────────────────────────
+telegram:
+  enabled: true          # TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID 가 없으면 자동 건너뜀
+  top_n: 15
