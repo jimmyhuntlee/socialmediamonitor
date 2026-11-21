@@ -1,52 +1,68 @@
 # ─────────────────────────────────────────────
 #  한국 바이럴 콘텐츠 모니터 설정
+#  유튜브(무료) = 매일 / 인스타·틱톡·스레드(Apify 유료) = 매주 월요일
 # ─────────────────────────────────────────────
 
 min_likes: 1000          # 이 좋아요 수 이상만 리포트에 포함
-lookback_days: 2         # 최근 며칠 안에 올라온 콘텐츠만 볼지
-korean_only: true        # 본문/제목에 한글이 있는 콘텐츠만 (유튜브 제외: 지역 필터 사용)
+lookback_days: 7         # 최근 7일 안에 올라온 콘텐츠
+weekly_day: 0            # 주 1회 플랫폼 수집 요일 (0=월 1=화 ... 6=일, 한국시간)
+korean_only: true        # 본문/제목에 한글이 있는 콘텐츠만
+
+# Apify 비용 안전장치: 수집기 1회 실행당 최대 금액(달러)
+# 주 1회 x 3개 수집기 x $0.40 = 한 달 최대 약 $5 (무료 크레딧 안)
+# 주의: 월요일이 아닌 날 "모든 플랫폼 수집"으로 수동 실행하면 그만큼 추가 비용
+apify_max_usd_per_run: 0.40
 
 # ── 유튜브 (공식 API, 무료) ──────────────────
 youtube:
   enabled: true
-  trending_pages: 4      # 한국 인기 급상승 50개 x 4페이지 = 200개 (페이지당 1유닛)
+  frequency: daily
+  trending_pages: 4      # 한국 인기 급상승 200개 (페이지당 1유닛)
   search_queries:        # 검색 1회 = 100유닛 (무료 한도: 하루 10,000유닛)
-    - ""                 # 빈 검색어 = 한국 지역 전체에서 조회수순
+    - ""                 # 한국 지역 최근 7일 조회수순 전체
     - "쇼츠"
+    - "뮤직비디오"
+    - "예능"
+    - "브이로그"
+    - "먹방"
   search_max_results: 50
 
 # ── X / 트위터 ───────────────────────────────
-# provider: apify  → min_faves:1000 연산자로 조건 맞는 글만 받아서 저렴
-# provider: official → X 공식 API (게시물 1건당 $0.005, 1회 최대 100건 = $0.5)
+# Apify 무료 플랜에서는 이 수집기를 API로 쓸 수 없어 꺼 둠
+# 켜려면: Apify 유료 플랜(월 $19) 또는 provider: official (X 공식 API, 주 100건 ≈ $0.5)
 x:
-  enabled: true
+  enabled: false
+  frequency: weekly
   provider: apify
   apify_actor: "apidojo/tweet-scraper"
   max_items: 100
   official_query: "lang:ko -is:retweet -is:reply"
 
-# ── 인스타그램 (Apify) ───────────────────────
+# ── 인스타그램 (Apify) ── 주 약 125건 ≈ $0.33
 instagram:
   enabled: true
+  frequency: weekly
   apify_actor: "apify/instagram-hashtag-scraper"
-  hashtags: ["일상", "데일리", "맛집", "먹스타그램", "패션", "뷰티", "여행", "릴스", "꿀팁", "밈"]
-  results_per_hashtag: 20
+  hashtags: ["일상", "맛집", "패션", "릴스", "밈"]
+  results_per_hashtag: 25
 
-# ── 틱톡 (Apify) ─────────────────────────────
+# ── 틱톡 (Apify) ── 주 약 125건 ≈ $0.2~0.4
 tiktok:
   enabled: true
+  frequency: weekly
   apify_actor: "clockworks/tiktok-scraper"
-  hashtags: ["추천", "추천떠라", "fyp한국", "한국", "일상", "먹방", "챌린지", "밈"]
-  results_per_hashtag: 20
+  hashtags: ["추천", "fyp한국", "일상", "챌린지", "밈"]
+  results_per_hashtag: 25
 
-# ── 스레드 (Apify) ───────────────────────────
+# ── 스레드 (Apify) ── 주 약 90건 ≈ $0.25
 threads:
   enabled: true
+  frequency: weekly
   apify_actor: "futurizerush/meta-threads-scraper"
-  keywords: ["오늘", "진짜", "근데", "ㅋㅋㅋ", "요즘", "한국"]
+  keywords: ["ㅋㅋㅋ", "요즘", "진짜"]
   max_posts_per_keyword: 30
 
 # ── 알림 (선택) ──────────────────────────────
 telegram:
   enabled: true          # TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID 가 없으면 자동 건너뜀
-  top_n: 15
+  top_n: 20
