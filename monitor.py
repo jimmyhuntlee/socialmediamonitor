@@ -364,6 +364,112 @@ def demo_items(now):
     return out
 
 
+# ─────────────────────────── 스레드 글감 후보 ───────────────────────────
+
+PARTICLES = ("에서", "으로", "이랑", "한테", "까지", "부터", "처럼", "보다", "은", "는", "이", "가",
+             "을", "를", "의", "에", "로", "도", "만", "와", "과", "랑")
+DEFAULT_STOP = set("""예능 쇼츠 shorts short 먹방 mukbang 브이로그 vlog 레전드 랭킹 top top5 top10 top3 반전 공감 유머
+웃긴영상 웃긴 재미 재미있는영상 일상 asmr sub mv m/v official 진짜 이유 결국 역대급 모음 최고 처음 드라마 숏드라마
+쇼츠드라마 스케치코미디 코믹숏 코믹숏드라마 코믹숏무비 코믹숏츠 예능레전드 music video 4k live ver version feat
+the and ft eating 반응 우리 그리고 사람 이거 하는 있는 없는 이런 그냥 너무 오늘 new 리뷰 공개 영상 리액션 reaction
+performance dance practice topic 뮤직비디오 youtubeshorts funny viral fyp 추천 인기영상 ㅋㅋ ㅋㅋㅋ ㄷㄷ 유튜브
+of in to my you is it for with 2026 2026년 이야기 사연 시니어 시니어드라마 시니어쇼츠 반전드라마 감동 숏코미디
+하나 모든 같은 정말 완전 이제 다시 지금 근황 대박 실화 ver. 게임 vs 혼자 내가 네가 세상 여자 남자 아들 딸 엄마 아빠
+남편 아내 친구 사랑 결과 시작 생기는 벌어진 일 방법 순간 모습 장면 한번 하루 매일 보고 보는 먹는 하면 했더니
+love me not thank you we he she they your our this that what how why when all one new 전설 열면 입만
+part ep episode full 1편 2편 3편 1탄 2탄 cover video official 직접 만든 만들기 가장 무조건 절대 갑자기 드디어""".split())
+
+
+def _raw_tokens(title):
+    return {w.lstrip("#") for w in re.findall(r"#?[0-9A-Za-z가-힣]+", title.lower())}
+
+
+def _tokens(title, vocab):
+    out = set()
+    for w in _raw_tokens(title):
+        if len(w) > 2 and re.fullmatch(r"[가-힣]+", w):
+            for pt in PARTICLES:   # '볶음너구리에' → '볶음너구리' (뗀 형태가 다른 제목에 있을 때만)
+                if w.endswith(pt) and len(w) - len(pt) >= 2 and w[: -len(pt)] in vocab:
+                    w = w[: -len(pt)]
+                    break
+        if len(w) >= 2 and not w.isdigit() and not (w.isascii() and len(w) < 4):
+            out.add(w)
+    return out
+
+
+def build_candidates(items, cfg, now):
+    """여러 채널이 동시에 다루는 '작은' 주제와 좋아요 비율 이상치를 뽑아 짧은 글감 목록으로"""
+    tc = cfg.get("threads_candidates", {})
+    region = tc.get("region", "KR")
+    min_ch, max_ch = tc.get("min_channels", 3), tc.get("max_channels", 10)
+    stop = DEFAULT_STOP | {w.lower() for w in tc.get("stopwords", [])}
+    avoid = [w.lower() for w in (tc.get("big_topics") or tc.get("exclude_topics") or [])]
+    pool = [i for i in items if region in i.get("regions", ["KR"])]
+
+    vocab = set().union(*(_raw_tokens(i["title"]) for i in pool)) if pool else set()
+    by_tok = {}
+    for it in pool:
+        for t in _tokens(it["title"], vocab) - stop:
+            by_tok.setdefault(t, []).append(it)
+    clusters = []
+    for t, its in by_tok.items():
+        chans = {i["author"] for i in its}
+        if len(chans) >= min_ch:
+            clusters.append({"keys": [t], "items": its, "chans": chans})
+    # 같은 영상 묶음을 가리키는 단어들은 합치기
+    clusters.sort(key=lambda c: -len(c["chans"]))
+    merged = []
+    for c in clusters:
+        ids = {i["id"] for i in c["items"]}
+        for m in merged:
+            mids = {i["id"] for i in m["items"]}
+            if len(ids & mids) / min(len(ids), len(mids)) >= 0.6:
+                m["keys"].append(c["keys"][0])
+                break
+        else:
+            merged.append(c)
+
+    def is_avoid(c):
+        return any(a in k for k in c["keys"] for a in avoid)
+
+    small = [c for c in merged if len(c["chans"]) <= max_ch and not is_avoid(c)]
+    crowded = [c for c in merged if len(c["chans"]) > max_ch or is_avoid(c)]
+    small.sort(key=lambda c: (-len(c["chans"]), -sum(i["likes"] for i in c["items"])))
+
+    def ratio(i):
+        return i["likes"] / i["views"] if i.get("views") else None
+
+    L = [f"# 스레드 글감 후보 ({REGION_NAME.get(region, region)}) · {now:%Y-%m-%d %H:%M} 기준",
+         "", "## A. 여러 채널이 막 다루기 시작한 주제 (글감 1순위)", ""]
+    for c in small[: tc.get("max_clusters", 40)]:
+        its = sorted(c["items"], key=lambda i: -i["likes"])
+        rs = [r for r in (ratio(i) for i in its) if r]
+        newest = max((i["published"] for i in its if i.get("published")), default=None)
+        L.append(f"### {' / '.join(c['keys'][:3])} — 채널 {len(c['chans'])}곳 · 영상 {len(its)}개 · "
+                 f"좋아요 합 {fmt(sum(i['likes'] for i in its))}"
+                 + (f" · 평균 좋아요비율 {sum(rs) / len(rs) * 100:.1f}%" if rs else "")
+                 + (f" · 최신 {newest.astimezone(KST):%m/%d}" if newest else ""))
+        for i in its[:3]:
+            L.append(f"- {i['title'][:55]} ({i['author']}, ❤️{fmt(i['likes'])})")
+        L.append("")
+    fans = [i for i in pool if (ratio(i) or 0) >= 0.05 and (i.get("views") or 0) >= 100000]
+    fans.sort(key=lambda i: -ratio(i))
+    L += ["## B. 좋아요 비율이 유난히 높은 영상 (팬덤 결집, 5% 이상 · 가중치 낮게)", ""]
+    L += [f"- {i['title'][:70]} ({i['author']}, ❤️{fmt(i['likes'])}, 비율 {ratio(i) * 100:.1f}%)" for i in fans[:8]]
+    crowded.sort(key=lambda c: -len(c["chans"]))
+    L += ["", "## C. 큰 주제 (대형 이벤트·많은 채널 · 가중치 낮게, 새로운 생활형 각도가 있을 때만)", ""]
+    for c in crowded[:10]:
+        its = sorted(c["items"], key=lambda i: -i["likes"])
+        L.append(f"### {' / '.join(c['keys'][:3])} — 채널 {len(c['chans'])}곳 · 영상 {len(its)}개 · "
+                 f"좋아요 합 {fmt(sum(i['likes'] for i in its))}")
+        for i in its[:3]:
+            L.append(f"- {i['title'][:55]} ({i['author']}, ❤️{fmt(i['likes'])})")
+        L.append("")
+    if not crowded:
+        L.append("-")
+    return "\n".join(L)
+
+
 # ─────────────────────────── 저장 / 리포트 ───────────────────────────
 
 def load_history():
@@ -674,6 +780,11 @@ def main():
     write_csv(items, out / f"{stamp}.csv")
     write_html(items, out / f"{stamp}.html", now, errors, notes, active, usage)
     write_html(items, out / "index.html", now, errors, notes, active, usage)   # 항상 최신본
+    try:
+        (out / "candidates.md").write_text(build_candidates(items, cfg, now), "utf-8")
+        log("스레드 글감 후보 저장: reports/candidates.md")
+    except Exception as e:
+        log(f"글감 후보 생성 실패: {e}")
     log(f"리포트 저장: reports/{stamp}.html ({len(items)}건)")
 
     if cfg.get("telegram", {}).get("enabled") and not args.demo:

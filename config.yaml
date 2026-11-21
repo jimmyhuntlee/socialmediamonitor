@@ -77,6 +77,16 @@ threads:
   keywords: ["ㅋㅋㅋ", "요즘", "진짜"]
   max_posts_per_keyword: 30
 
+# ── 스레드 글감 후보 (reports/candidates.md) ──
+# 여러 채널이 동시에 다루는 '작은' 주제를 뽑아 둠 → 스레드 글 스킬이 이 파일만 읽음
+threads_candidates:
+  region: KR              # 어느 나라 콘텐츠로 뽑을지 (KR / US / HR)
+  min_channels: 3         # 최소 몇 개 채널이 다뤄야 후보인지
+  max_channels: 10        # 이보다 많으면 '큰 주제'(C)로 분류 - 후보엔 남지만 우선순위 낮음
+  max_clusters: 40
+  big_topics: ["gta", "수능", "mma", "mama"]   # 이번 주 대형 이벤트 → '큰 주제'(C)로 분류 (빼지 않음, 수시로 바꾸기)
+  stopwords: []           # 후보에서 빼고 싶은 단어 추가
+
 # ── 알림 (선택) ──────────────────────────────
 telegram:
   enabled: true          # TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID 가 없으면 자동 건너뜀
