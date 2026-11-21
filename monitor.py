@@ -112,12 +112,31 @@ def normalize(platform, raw):
 
 # ─────────────────────────── Apify 공통 ───────────────────────────
 
-def run_apify(actor, actor_input, timeout=600):
+def run_apify(actor, actor_input, max_wait=900):
+    """Apify 수집기를 실행하고 끝날 때까지 기다린 뒤 결과를 가져옴 (최대 15분)"""
     token = os.getenv("APIFY_TOKEN")
     if not token:
         raise RuntimeError("APIFY_TOKEN 환경변수가 없습니다")
-    url = f"https://api.apify.com/v2/acts/{actor.replace('/', '~')}/run-sync-get-dataset-items"
-    r = requests.post(url, params={"token": token}, json=actor_input, timeout=timeout)
+    api = "https://api.apify.com/v2"
+    r = requests.post(f"{api}/acts/{actor.replace('/', '~')}/runs",
+                      params={"token": token, "waitForFinish": 60}, json=actor_input, timeout=90)
+    if r.status_code >= 400:
+        raise RuntimeError(f"Apify 실행 실패 ({r.status_code}): {r.text[:200]}")
+    run = r.json()["data"]
+    waited = 60
+    while run["status"] in ("READY", "RUNNING") and waited < max_wait:
+        r = requests.get(f"{api}/actor-runs/{run['id']}",
+                         params={"token": token, "waitForFinish": 60}, timeout=90)
+        r.raise_for_status()
+        run = r.json()["data"]
+        waited += 60
+    if run["status"] in ("READY", "RUNNING"):
+        requests.post(f"{api}/actor-runs/{run['id']}/abort", params={"token": token}, timeout=30)
+        log(f"  {actor}: {max_wait // 60}분 초과 → 중단하고 그때까지 모인 결과만 사용")
+    elif run["status"] != "SUCCEEDED":
+        log(f"  {actor}: 상태 {run['status']} → 모인 결과만 사용")
+    r = requests.get(f"{api}/datasets/{run['defaultDatasetId']}/items",
+                     params={"token": token, "clean": "true", "format": "json"}, timeout=120)
     r.raise_for_status()
     data = r.json()
     return data if isinstance(data, list) else []
