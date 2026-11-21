@@ -170,6 +170,24 @@ def apify_usage():
 
 REGION_NAME = {"KR": "한국"}
 CROATIAN = re.compile(r"[čćžšđČĆŽŠĐ]")
+SCRIPTS = {   # 제외용 문자 범위
+    "indic": re.compile(r"[\u0900-\u0DFF]"),        # 힌디·벵골·펀잡·타밀·텔루구·말라얄람 등
+    "arabic": re.compile(r"[\u0600-\u06FF\u0750-\u077F]"),  # 아랍·우르두
+}
+
+
+def excluded(region, sn):
+    """나라별 제외 규칙: 특정 문자나 단어가 제목·채널명·설명·태그에 있으면 제외"""
+    scripts = region.get("exclude_scripts") or []
+    words = region.get("exclude_keywords") or []
+    if not scripts and not words:
+        return False
+    text = " ".join([sn.get("title", ""), sn.get("channelTitle", ""),
+                     sn.get("description", "")[:1500], " ".join(sn.get("tags", []) or [])])
+    if any(SCRIPTS[sc].search(text) for sc in scripts if sc in SCRIPTS):
+        return True
+    low = text.lower()
+    return any(re.search(r"(?<![a-z])" + re.escape(w.lower().lstrip("#")) + r"(?![a-z])", low) for w in words)
 
 
 def lang_match(region, sn):
@@ -249,7 +267,8 @@ def fetch_youtube(cfg, since):
             continue
         st, sn = v.get("statistics", {}), v.get("snippet", {})
         ok = [c for c, from_chart in regs.items()
-              if (from_chart and cfg.get("trust_trending", True)) or lang_match(by_code[c], sn)]
+              if ((from_chart and cfg.get("trust_trending", True)) or lang_match(by_code[c], sn))
+              and not excluded(by_code[c], sn)]
         if not ok:
             continue
         out.append({

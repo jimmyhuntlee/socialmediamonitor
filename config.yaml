@@ -30,6 +30,12 @@ youtube:
       name: 미국
       language: en
       search_queries: ["", "shorts", "music video"]
+      # 제목·채널명·설명·태그에 아래 문자나 단어가 있으면 미국 목록에서 제외
+      exclude_scripts: ["indic", "arabic"]     # 인도 계열 문자(힌디어 등), 아랍·우르두 문자
+      exclude_keywords: ["indian", "india", "desi", "hindi", "bollywood", "haryanvi", "bhojpuri",
+                         "punjabi", "tamil", "telugu", "malayalam", "kannada", "marathi", "bengali",
+                         "gujarati", "urdu", "pakistani", "chhath", "diwali", "saas bahu", "tmkoc",
+                         "t-series", "honey singh"]
     - code: HR
       name: 크로아티아
       language: hr
