@@ -130,7 +130,7 @@ def fetch_youtube(cfg, since):
     if not key:
         raise RuntimeError("YOUTUBE_API_KEY 환경변수가 없습니다")
     base = "https://www.googleapis.com/youtube/v3"
-    videos, ids = [], set()
+    videos, ids, trending_ids = [], set(), set()
 
     # 1) 한국 인기 급상승 (페이지당 1유닛)
     page = None
@@ -143,6 +143,7 @@ def fetch_youtube(cfg, since):
         if "error" in d:
             raise RuntimeError(d["error"].get("message"))
         for v in d.get("items", []):
+            trending_ids.add(v["id"])
             if v["id"] not in ids:
                 ids.add(v["id"]); videos.append(v)
         page = d.get("nextPageToken")
@@ -172,6 +173,17 @@ def fetch_youtube(cfg, since):
     out = []
     for v in videos:
         st, sn = v.get("statistics", {}), v.get("snippet", {})
+        # 한국 콘텐츠 판별: 한국 인기 급상승 차트에 오른 영상이거나,
+        # 제목/채널명/설명에 한글이 있거나, 영상 언어가 한국어인 경우
+        lang = (sn.get("defaultAudioLanguage") or sn.get("defaultLanguage") or "").lower()
+        is_korean = (
+            (v["id"] in trending_ids and cfg.get("trust_trending", True))
+            or lang.startswith("ko")
+            or bool(HANGUL.search(" ".join([sn.get("title", ""), sn.get("channelTitle", ""),
+                                            sn.get("description", "")[:500]])))
+        )
+        if not is_korean:
+            continue
         out.append({
             "platform": "youtube", "id": f"youtube:{v['id']}",
             "url": f"https://www.youtube.com/watch?v={v['id']}",
