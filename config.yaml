@@ -13,19 +13,28 @@ korean_only: true        # 본문/제목에 한글이 있는 콘텐츠만
 # 주의: 월요일이 아닌 날 "모든 플랫폼 수집"으로 수동 실행하면 그만큼 추가 비용
 apify_max_usd_per_run: 0.40
 
-# ── 유튜브 (공식 API, 무료) ──────────────────
+# ── 유튜브 (공식 API, 무료 · 매일) ──────────
+# 나라별로: 인기 급상승 차트 200개(4유닛) + 최근 조회수순 검색(검색 1회 100유닛)
+# 하루 사용량 약 1,100유닛 / 무료 한도 10,000유닛
 youtube:
   enabled: true
   frequency: daily
-  trending_pages: 4      # 한국 인기 급상승 200개 (페이지당 1유닛)
-  search_queries:        # 검색 1회 = 100유닛 (무료 한도: 하루 10,000유닛)
-    - ""                 # 한국 지역 최근 7일 조회수순 전체
-    - "쇼츠"
-    - "뮤직비디오"
-    - "예능"
-    - "브이로그"
-    - "먹방"
+  trending_pages: 4
   search_max_results: 50
+  regions:
+    - code: KR
+      name: 한국
+      language: ko
+      search_queries: ["", "쇼츠", "뮤직비디오", "예능", "브이로그", "먹방"]
+    - code: US
+      name: 미국
+      language: en
+      search_queries: ["", "shorts", "music video"]
+    - code: HR
+      name: 크로아티아
+      language: hr
+      search_queries: ["", "glazba"]
+      min_likes: 300        # 작은 나라라 기준을 낮춤 (빼면 전체 기준 1,000 적용)
 
 # ── X / 트위터 ───────────────────────────────
 # Apify 무료 플랜에서는 이 수집기를 API로 쓸 수 없어 꺼 둠
