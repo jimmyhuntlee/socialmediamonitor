@@ -149,73 +149,117 @@ def run_apify(actor, actor_input, max_wait=900):
     return data if isinstance(data, list) else []
 
 
+def apify_usage():
+    """이번 결제 주기 Apify 사용 금액 (조회만, 비용 없음)"""
+    token = os.getenv("APIFY_TOKEN")
+    if not token:
+        return None
+    try:
+        r = requests.get("https://api.apify.com/v2/users/me/limits", params={"token": token}, timeout=30)
+        r.raise_for_status()
+        d = r.json()["data"]
+        return {"used": float(d.get("current", {}).get("monthlyUsageUsd") or 0),
+                "limit": float(d.get("limits", {}).get("maxMonthlyUsageUsd") or 0),
+                "reset": parse_time(d.get("monthlyUsageCycle", {}).get("endAt"))}
+    except Exception as e:
+        log(f"Apify 사용량 조회 실패: {e}")
+        return None
+
+
 # ─────────────────────────── 플랫폼별 수집 ───────────────────────────
+
+REGION_NAME = {"KR": "한국"}
+CROATIAN = re.compile(r"[čćžšđČĆŽŠĐ]")
+
+
+def lang_match(region, sn):
+    """검색으로 찾은 영상이 그 나라 콘텐츠인지 판별"""
+    lang = (sn.get("defaultAudioLanguage") or sn.get("defaultLanguage") or "").lower()
+    text = " ".join([sn.get("title", ""), sn.get("channelTitle", ""), sn.get("description", "")[:500]])
+    want = (region.get("language") or "").lower()
+    if want and lang.startswith(want):
+        return True
+    if want == "ko":
+        return bool(HANGUL.search(text))
+    if want == "hr":
+        return lang[:2] in ("bs", "sr", "sh") or bool(CROATIAN.search(text))
+    if want == "en":   # 언어 정보가 없으면 제목이 대부분 영문자일 때만
+        if lang:
+            return False
+        t = sn.get("title", "")
+        letters = [c for c in t if c.isalpha()]
+        return bool(letters) and sum(c.isascii() for c in letters) / len(letters) > 0.9
+    return not want
+
 
 def fetch_youtube(cfg, since):
     key = os.getenv("YOUTUBE_API_KEY")
     if not key:
         raise RuntimeError("YOUTUBE_API_KEY 환경변수가 없습니다")
     base = "https://www.googleapis.com/youtube/v3"
-    videos, ids, trending_ids = [], set(), set()
+    regions = cfg.get("regions") or [{"code": "KR", "name": "한국", "language": "ko",
+                                       "search_queries": cfg.get("search_queries", [""])}]
+    videos = {}        # 영상ID → 영상 정보
+    found = {}         # 영상ID → {국가코드: 차트여부}
 
-    # 1) 한국 인기 급상승 (페이지당 1유닛)
-    page = None
-    for _ in range(cfg.get("trending_pages", 4)):
-        p = {"part": "snippet,statistics", "chart": "mostPopular", "regionCode": "KR",
-             "maxResults": 50, "key": key}
-        if page:
-            p["pageToken"] = page
-        d = requests.get(f"{base}/videos", params=p, timeout=30).json()
+    def get(path, params):
+        d = requests.get(f"{base}/{path}", params={**params, "key": key}, timeout=30).json()
         if "error" in d:
             raise RuntimeError(d["error"].get("message"))
-        for v in d.get("items", []):
-            trending_ids.add(v["id"])
-            if v["id"] not in ids:
-                ids.add(v["id"]); videos.append(v)
-        page = d.get("nextPageToken")
-        if not page:
-            break
+        return d
 
-    # 2) 한국 지역 최근 영상 조회수순 검색 (검색 1회 100유닛)
-    search_ids = []
-    for q in cfg.get("search_queries", []):
-        p = {"part": "id", "type": "video", "regionCode": "KR", "relevanceLanguage": "ko",
-             "order": "viewCount", "publishedAfter": since.strftime("%Y-%m-%dT%H:%M:%SZ"),
-             "maxResults": cfg.get("search_max_results", 50), "key": key}
-        if q:
-            p["q"] = q
-        d = requests.get(f"{base}/search", params=p, timeout=30).json()
-        if "error" in d:
-            raise RuntimeError(d["error"].get("message"))
-        search_ids += [i["id"]["videoId"] for i in d.get("items", []) if i["id"]["videoId"] not in ids]
-    for i in range(0, len(search_ids), 50):
-        chunk = list(dict.fromkeys(search_ids[i:i + 50]))
-        d = requests.get(f"{base}/videos", params={"part": "snippet,statistics",
-                         "id": ",".join(chunk), "key": key}, timeout=30).json()
-        for v in d.get("items", []):
-            if v["id"] not in ids:
-                ids.add(v["id"]); videos.append(v)
+    for rg in regions:
+        code = rg["code"].upper()
+        REGION_NAME[code] = rg.get("name", code)
+        # 1) 인기 급상승 차트 (페이지당 1유닛)
+        page = None
+        for _ in range(rg.get("trending_pages", cfg.get("trending_pages", 4))):
+            p = {"part": "snippet,statistics", "chart": "mostPopular", "regionCode": code, "maxResults": 50}
+            if page:
+                p["pageToken"] = page
+            d = get("videos", p)
+            for v in d.get("items", []):
+                videos[v["id"]] = v
+                found.setdefault(v["id"], {})[code] = True
+            page = d.get("nextPageToken")
+            if not page:
+                break
+        # 2) 최근 조회수순 검색 (검색 1회 100유닛)
+        for q in rg.get("search_queries", [""]):
+            p = {"part": "id", "type": "video", "regionCode": code, "order": "viewCount",
+                 "publishedAfter": since.strftime("%Y-%m-%dT%H:%M:%SZ"),
+                 "maxResults": cfg.get("search_max_results", 50)}
+            if rg.get("language"):
+                p["relevanceLanguage"] = rg["language"]
+            if q:
+                p["q"] = q
+            for i in get("search", p).get("items", []):
+                found.setdefault(i["id"]["videoId"], {}).setdefault(code, False)
+    # 검색으로 찾은 영상 통계 가져오기 (50개당 1유닛)
+    missing = [v for v in found if v not in videos]
+    for i in range(0, len(missing), 50):
+        for v in get("videos", {"part": "snippet,statistics", "id": ",".join(missing[i:i + 50])}).get("items", []):
+            videos[v["id"]] = v
 
+    by_code = {rg["code"].upper(): rg for rg in regions}
     out = []
-    for v in videos:
+    for vid, regs in found.items():
+        v = videos.get(vid)
+        if not v:
+            continue
         st, sn = v.get("statistics", {}), v.get("snippet", {})
-        # 한국 콘텐츠 판별: 한국 인기 급상승 차트에 오른 영상이거나,
-        # 제목/채널명/설명에 한글이 있거나, 영상 언어가 한국어인 경우
-        lang = (sn.get("defaultAudioLanguage") or sn.get("defaultLanguage") or "").lower()
-        is_korean = (
-            (v["id"] in trending_ids and cfg.get("trust_trending", True))
-            or lang.startswith("ko")
-            or bool(HANGUL.search(" ".join([sn.get("title", ""), sn.get("channelTitle", ""),
-                                            sn.get("description", "")[:500]])))
-        )
-        if not is_korean:
+        ok = [c for c, from_chart in regs.items()
+              if (from_chart and cfg.get("trust_trending", True)) or lang_match(by_code[c], sn)]
+        if not ok:
             continue
         out.append({
-            "platform": "youtube", "id": f"youtube:{v['id']}",
-            "url": f"https://www.youtube.com/watch?v={v['id']}",
+            "platform": "youtube", "id": f"youtube:{vid}",
+            "url": f"https://www.youtube.com/watch?v={vid}",
             "title": sn.get("title", ""), "author": sn.get("channelTitle", ""),
             "likes": to_int(st.get("likeCount")), "views": to_int(st.get("viewCount")),
             "published": parse_time(sn.get("publishedAt")), "korean_checked": True,
+            "regions": [c for c in by_code if c in ok],
+            "min_likes": min((by_code[c].get("min_likes") or 0) for c in ok) or None,
         })
     return [o for o in out if o["likes"] is not None]
 
@@ -295,7 +339,9 @@ def demo_items(now):
                         "title": t, "author": f"user_{p}_{i}",
                         "likes": random.choice([800, 1200, 3400, 9800, 25000, 140000]),
                         "views": random.choice([None, 50000, 320000, 1800000]),
-                        "published": now - timedelta(hours=random.randint(1, 46))})
+                        "published": now - timedelta(hours=random.randint(1, 46)),
+                        "regions": [["KR"], ["US"], ["HR"], ["KR"], ["US", "HR"], ["KR"]][i]
+                        if p == "youtube" else ["KR"]})
     return out
 
 
@@ -347,7 +393,10 @@ def build_schedule_notes(cfg, status, now, demo=False):
     if daily:
         failed = [p for p in daily if status.get(p, {}).get("failed")]
         state = "오늘 수집" if not failed else "오늘 수집 실패: " + ", ".join(PLATFORM_LABEL[p] for p in failed)
-        lines.append(f"{' · '.join(PLATFORM_LABEL[p] for p in daily)}: 매일 {run_hour:02d}시 수집 ({state})")
+        def label(p):
+            rgs = cfg.get(p, {}).get("regions")
+            return PLATFORM_LABEL[p] + (f"({'·'.join(r.get('name', r['code']) for r in rgs)})" if rgs else "")
+        lines.append(f"{' · '.join(label(p) for p in daily)}: 매일 {run_hour:02d}시 수집 ({state})")
     if weekly:
         days_ahead = (wd - now.weekday()) % 7 or 7
         nxt = now + timedelta(days=days_ahead)
@@ -360,9 +409,14 @@ def build_schedule_notes(cfg, status, now, demo=False):
         for key, ps in groups.items():
             lines.append(f"{' · '.join(PLATFORM_LABEL[p] for p in ps)}: 매주 {WEEKDAY[wd]}요일 수집 "
                          f"({key} · 다음 {nxt:%m/%d})")
-    lang = "한국어 " if cfg.get("korean_only") else ""
-    lines.append(f"기준: 최근 {cfg.get('lookback_days', 7)}일 안에 올라온 {lang}콘텐츠 중 "
+    lines.append(f"기준: 최근 {cfg.get('lookback_days', 7)}일 안에 올라온 콘텐츠 중 "
                  f"좋아요 {cfg.get('min_likes', 1000):,}개 이상")
+    rgs = cfg.get("youtube", {}).get("regions") or []
+    lower = [f"{r.get('name', r['code'])} {r['min_likes']:,}개" for r in rgs if r.get("min_likes")]
+    if lower:
+        lines.append("국가별 좋아요 기준(유튜브): " + ", ".join(lower))
+    if cfg.get("korean_only"):
+        lines.append("한국: 한국어 콘텐츠만 · 해외: 각 나라 인기 급상승 차트 + 그 나라 언어 콘텐츠")
     return lines
 
 
@@ -377,21 +431,24 @@ def fmt(n):
 def write_csv(items, path):
     with open(path, "w", newline="", encoding="utf-8-sig") as f:
         w = csv.writer(f)
-        w.writerow(["플랫폼", "좋아요", "조회수", "제목/본문", "작성자", "게시시각(KST)", "신규", "URL"])
+        w.writerow(["플랫폼", "국가", "좋아요", "조회수", "제목/본문", "작성자", "게시시각(KST)", "신규", "URL"])
         for it in items:
             pub = it["published"].astimezone(KST).strftime("%Y-%m-%d %H:%M") if it["published"] else ""
-            w.writerow([PLATFORM_LABEL[it["platform"]], it["likes"], it["views"] or "",
+            w.writerow([PLATFORM_LABEL[it["platform"]], " · ".join(REGION_NAME.get(c, c) for c in it["regions"]),
+                        it["likes"], it["views"] or "",
                         it["title"], it["author"], pub, "Y" if it["is_new"] else "", it["url"]])
 
 
-def write_html(items, path, now, errors, notes=None):
+def write_html(items, path, now, errors, notes=None, active=None, usage=None):
+    active = active or PLATFORMS
     counts = {p: sum(1 for i in items if i["platform"] == p) for p in PLATFORMS}
     rows = []
     for it in items:
         pub = it["published"].astimezone(KST).strftime("%m/%d %H:%M") if it["published"] else "-"
         rows.append(
-            f'<tr data-p="{it["platform"]}" data-new="{int(it["is_new"])}">'
+            f'<tr data-p="{it["platform"]}" data-r="{" ".join(it["regions"])}" data-new="{int(it["is_new"])}">'
             f'<td><span class="tag {it["platform"]}">{PLATFORM_LABEL[it["platform"]]}</span></td>'
+            f'<td class="rg">{" · ".join(REGION_NAME.get(c, c) for c in it["regions"])}</td>'
             f'<td class="num" data-v="{it["likes"]}">{fmt(it["likes"])}</td>'
             f'<td class="num" data-v="{it["views"] or 0}">{fmt(it["views"])}</td>'
             f'<td class="t"><a href="{html.escape(it["url"])}" target="_blank" rel="noopener">'
@@ -399,10 +456,27 @@ def write_html(items, path, now, errors, notes=None):
             f'{" <b class=new>NEW</b>" if it["is_new"] else ""}</td>'
             f'<td>{html.escape(it["author"])}</td><td class="num">{pub}</td></tr>')
     err_html = "".join(f"<li>{PLATFORM_LABEL[p]}: {html.escape(e)}</li>" for p, e in errors.items())
-    buttons = "".join(f'<button data-f="{p}">{PLATFORM_LABEL[p]} {counts[p]}</button>' for p in PLATFORMS)
+    buttons = "".join(f'<button data-f="{p}">{PLATFORM_LABEL[p]} {counts[p]}</button>' for p in active)
+    codes = list(dict.fromkeys(c for it in items for c in it["regions"]))
+    codes = [c for c in REGION_NAME if c in codes] + [c for c in codes if c not in REGION_NAME]
+    rbuttons = "".join(f'<button data-r="{c}">{REGION_NAME.get(c, c)} '
+                       f'{sum(c in i["regions"] for i in items)}</button>' for c in codes)
+    usage_html = ""
+    if usage is not None:
+        if usage:
+            pct = (usage["used"] / usage["limit"] * 100) if usage["limit"] else 0
+            reset = f" · {usage['reset'].astimezone(KST):%m/%d} 초기화" if usage.get("reset") else ""
+            limit = f" / ${usage['limit']:.2f} ({pct:.0f}%)" if usage["limit"] else ""
+            usage_txt = f"이번 달 사용 <b>${usage['used']:.2f}</b>{limit}{reset} · {now:%m/%d %H:%M} 기준"
+            bar = f'<div class="ubar"><i style="width:{min(pct, 100):.0f}%"></i></div>' if usage["limit"] else ""
+        else:
+            usage_txt, bar = "사용량을 불러오지 못했습니다", ""
+        usage_html = (f'<div class="usage"><div><b>Apify 비용</b> · {usage_txt}{bar}</div>'
+                      f'<a class="btn" href="https://console.apify.com/billing" target="_blank" '
+                      f'rel="noopener">Apify 사용량 보기 ↗</a></div>')
     page = f"""<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>한국 바이럴 리포트 {now:%Y-%m-%d}</title><style>
+<title>바이럴 리포트 {now:%Y-%m-%d}</title><style>
 body{{font-family:-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;margin:0;background:#f6f6f4;color:#1d1d1b}}
 main{{max-width:1100px;margin:0 auto;padding:28px 20px}}
 h1{{font-size:22px;margin:0 0 4px}} .sub{{color:#6b6b66;font-size:14px;margin-bottom:18px}}
@@ -420,21 +494,33 @@ th{{background:#fafaf8;font-weight:600;cursor:pointer;white-space:nowrap}}
 .new{{font-size:10px;color:#d93025;margin-left:4px}}
 .info{{background:#fff;border:1px solid #e4e4de;padding:12px 16px;border-radius:8px;font-size:13px;margin-bottom:12px;line-height:1.7}}
 .info ul,.err ul{{margin:4px 0 0;padding-left:18px}}
+.usage{{display:flex;justify-content:space-between;align-items:center;gap:12px;background:#fff;border:1px solid #e4e4de;padding:12px 16px;border-radius:8px;font-size:13px;margin-bottom:12px}}
+.ubar{{height:6px;background:#eeeeea;border-radius:3px;margin-top:6px;max-width:320px}} .ubar i{{display:block;height:100%;background:#2f8f5b;border-radius:3px}}
+.btn{{white-space:nowrap;border:1px solid #1d1d1b;border-radius:999px;padding:6px 12px;color:#1d1d1b;text-decoration:none;font-size:13px}}
+.btn:hover{{background:#1d1d1b;color:#fff}}
+.lb{{font-size:12px;color:#6b6b66;align-self:center;width:44px}} .rg{{white-space:nowrap;font-size:13px;color:#4a4a45}}
 .err{{background:#fff4e5;border:1px solid #f0d3a8;padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:14px}}
 </style></head><body><main>
-<h1>한국 바이럴 콘텐츠 · 최근 {CFG_DAYS}일 · 좋아요 {CFG_MIN:,}+</h1>
+<h1>바이럴 콘텐츠 모니터 · 최근 {CFG_DAYS}일 · 좋아요 {CFG_MIN:,}+</h1>
 <div class="sub">{now:%Y년 %m월 %d일 %H:%M} 기준 · 총 {len(items)}건 · 신규 {sum(i['is_new'] for i in items)}건</div>
+{usage_html}
 {('<div class="info"><b>수집 주기</b><ul>' + "".join(f"<li>{html.escape(n)}</li>" for n in notes) + '</ul></div>') if notes else ''}
 {f'<div class="err">일부 플랫폼 수집 실패<ul>{err_html}</ul></div>' if errors else ''}
-<div class="bar"><button class="on" data-f="all">전체 {len(items)}</button>{buttons}
+<div class="bar" id="pf"><span class="lb">플랫폼</span><button class="on" data-f="all">전체 {len(items)}</button>{buttons}
 <button data-f="new">신규만</button></div>
-<table id="t"><thead><tr><th>플랫폼</th><th data-s="1">좋아요 ↓</th><th data-s="2">조회수</th>
+{f'<div class="bar" id="rf"><span class="lb">국가</span><button class="on" data-r="all">전체</button>{rbuttons}</div>' if len(codes) > 1 else ''}
+<table id="t"><thead><tr><th>플랫폼</th><th>국가</th><th data-s="2">좋아요 ↓</th><th data-s="3">조회수</th>
 <th>제목 / 본문</th><th>작성자</th><th>게시</th></tr></thead><tbody>{''.join(rows)}</tbody></table>
 </main><script>
-document.querySelectorAll('.bar button').forEach(b=>b.onclick=()=>{{
- document.querySelectorAll('.bar button').forEach(x=>x.classList.remove('on'));b.classList.add('on');
- const f=b.dataset.f;document.querySelectorAll('#t tbody tr').forEach(r=>{{
-  r.style.display=(f==='all'||r.dataset.p===f||(f==='new'&&r.dataset.new==='1'))?'':'none';}});}});
+let pf='all',rf='all';
+function apply(){{document.querySelectorAll('#t tbody tr').forEach(r=>{{
+ const okP=pf==='all'||r.dataset.p===pf||(pf==='new'&&r.dataset.new==='1');
+ const okR=rf==='all'||r.dataset.r.split(' ').includes(rf);
+ r.style.display=(okP&&okR)?'':'none';}});}}
+document.querySelectorAll('#pf button').forEach(b=>b.onclick=()=>{{
+ document.querySelectorAll('#pf button').forEach(x=>x.classList.remove('on'));b.classList.add('on');pf=b.dataset.f;apply();}});
+document.querySelectorAll('#rf button').forEach(b=>b.onclick=()=>{{
+ document.querySelectorAll('#rf button').forEach(x=>x.classList.remove('on'));b.classList.add('on');rf=b.dataset.r;apply();}});
 document.querySelectorAll('th[data-s]').forEach(th=>th.onclick=()=>{{
  const i=+th.dataset.s,tb=document.querySelector('#t tbody');
  [...tb.rows].sort((a,b)=>b.cells[i].dataset.v-a.cells[i].dataset.v).forEach(r=>tb.appendChild(r));}});
@@ -448,9 +534,10 @@ def send_telegram(items, top_n, now):
         log("텔레그램: 토큰 없음 → 건너뜀")
         return
     new = [i for i in items if i["is_new"]][:top_n]
-    lines = [f"<b>🔥 한국 바이럴 {now:%m/%d}</b> · 총 {len(items)}건 (신규 {sum(i['is_new'] for i in items)})", ""]
+    lines = [f"<b>🔥 바이럴 리포트 {now:%m/%d}</b> · 총 {len(items)}건 (신규 {sum(i['is_new'] for i in items)})", ""]
     for i in new:
-        lines.append(f"[{PLATFORM_LABEL[i['platform']]}] ❤️{fmt(i['likes'])} "
+        rg = "" if i["regions"] == ["KR"] else "·" + "/".join(REGION_NAME.get(c, c) for c in i["regions"])
+        lines.append(f"[{PLATFORM_LABEL[i['platform']]}{rg}] ❤️{fmt(i['likes'])} "
                      f"<a href=\"{html.escape(i['url'])}\">{html.escape(i['title'][:50] or '(내용 없음)')}</a>")
     requests.post(f"https://api.telegram.org/bot{token}/sendMessage",
                   json={"chat_id": chat, "text": "\n".join(lines), "parse_mode": "HTML",
@@ -480,8 +567,10 @@ def main():
     since = (now - timedelta(days=cfg.get("lookback_days", 2))).astimezone(timezone.utc)
 
     collected, errors, status = [], {}, {}
+    for rg in cfg.get("youtube", {}).get("regions") or []:
+        REGION_NAME[rg["code"].upper()] = rg.get("name", rg["code"])
     if args.demo:
-        collected = demo_items(now)
+        collected = [i for i in demo_items(now) if cfg.get(i["platform"], {}).get("enabled")]
     else:
         fetchers = {
             "youtube": lambda c: fetch_youtube(c, since),
@@ -523,10 +612,12 @@ def main():
                 if cached:
                     collected += cached
 
+    for it in collected:
+        it.setdefault("regions", ["KR"])
     # 필터: 좋아요 기준, 기간, 한국어
     items, seen_ids = [], set()
     for it in collected:
-        if it["id"] in seen_ids or (it["likes"] or 0) < min_likes:
+        if it["id"] in seen_ids or (it["likes"] or 0) < (it.get("min_likes") or min_likes):
             continue
         ref = (it["cached_at"] - timedelta(days=cfg.get("lookback_days", 7))) if it.get("cached_at") else since
         if it["published"] and it["published"] < ref:
@@ -550,13 +641,20 @@ def main():
         save_history(hist)
 
     notes = build_schedule_notes(cfg, status, now, args.demo)
+    active = [p for p in PLATFORMS if cfg.get(p, {}).get("enabled")]
+    uses_apify = any(cfg.get(p, {}).get("enabled") for p in ("instagram", "tiktok", "threads")) or \
+        (cfg.get("x", {}).get("enabled") and cfg["x"].get("provider") == "apify")
+    if args.demo:
+        usage = {"used": 1.37, "limit": 5.0, "reset": now + timedelta(days=12)} if uses_apify else None
+    else:
+        usage = (apify_usage() or False) if uses_apify else None
 
     out = ROOT / "reports"
     out.mkdir(exist_ok=True)
     stamp = f"{now:%Y-%m-%d}" + ("-demo" if args.demo else "")
     write_csv(items, out / f"{stamp}.csv")
-    write_html(items, out / f"{stamp}.html", now, errors, notes)
-    write_html(items, out / "index.html", now, errors, notes)   # 항상 최신본
+    write_html(items, out / f"{stamp}.html", now, errors, notes, active, usage)
+    write_html(items, out / "index.html", now, errors, notes, active, usage)   # 항상 최신본
     log(f"리포트 저장: reports/{stamp}.html ({len(items)}건)")
 
     if cfg.get("telegram", {}).get("enabled") and not args.demo:
