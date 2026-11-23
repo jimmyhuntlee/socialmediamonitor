@@ -1,134 +1,117 @@
-# 스레드 글감 후보 (한국) · 2026-11-22 11:56 기준
+# 스레드 글감 후보 (한국) · 2026-11-23 12:39 기준
 
 ## A. 여러 채널이 막 다루기 시작한 주제 (글감 1순위)
 
-### 일본 — 채널 5곳 · 영상 5개 · 좋아요 합 3.6만 · 평균 좋아요비율 1.3% · 최신 11/20
-- 일본 편의점털이 먹방 점수매기기🍙🍜🍥🇯🇵 #mukbang (슈기님, ❤️1.2만) https://www.youtube.com/watch?v=eyLYtrJfOgc
-- 일본 꼬치 도전먹방 1등 기록 깨러 일본 날아왔습니다. (히밥heebab, ❤️1.1만) https://www.youtube.com/watch?v=2v9i0n6PqyY
-- 일본 최고의 노잼도시라는 나고야에서 무한먹방기행 - 일본(2) (이자반, ❤️5,981) https://www.youtube.com/watch?v=750j8VHoSkY
+### 미미미누 — 채널 5곳 · 영상 11개 · 좋아요 합 30.5만 · 평균 좋아요비율 1.3% · 최신 11/22
+- 리트만점자 이진우가 미미미누랑 변호사를 만나면 생기는일ㅋㅋ 라이브 (뉴스냥이, ❤️7.7만) https://www.youtube.com/watch?v=DHYbxaf_87I
+- 미미미누에게 진심인 가톨릭대 #미미미누 #예능 (예능다락방, ❤️7만) https://www.youtube.com/watch?v=jsBL7yYjEPU
+- 남의 분량 뺏어간 호박 고구마 #미미미누 #예능 (예능다락방, ❤️3.5만) https://www.youtube.com/watch?v=jcBUJIxHxco
 
-### angel — 채널 4곳 · 영상 4개 · 좋아요 합 59.7만 · 평균 좋아요비율 2.3% · 최신 11/20
-- TXT (투모로우바이투게더) 'Angel Bite' Official MV (HYBE LABELS, ❤️30.9만) https://www.youtube.com/watch?v=M9G4guYg-i8
-- NAYEON “BABY ANGEL” M/V (JYP Entertainment, ❤️19.8만) https://www.youtube.com/watch?v=0JQ9k6kcKVs
-- TXT (투모로우바이투게더) 'Angel Bite' Performance Film (TOMORROW X TOGETHER OFFICIAL, ❤️7.8만) https://www.youtube.com/watch?v=eOj92mF0-Eo
+### angel — 채널 4곳 · 영상 4개 · 좋아요 합 63.2만 · 평균 좋아요비율 2.0% · 최신 11/20
+- TXT (투모로우바이투게더) 'Angel Bite' Official MV (HYBE LABELS, ❤️31.9만) https://www.youtube.com/watch?v=M9G4guYg-i8
+- NAYEON “BABY ANGEL” M/V (JYP Entertainment, ❤️21.3만) https://www.youtube.com/watch?v=0JQ9k6kcKVs
+- TXT (투모로우바이투게더) 'Angel Bite' Performance Film (TOMORROW X TOGETHER OFFICIAL, ❤️8.5만) https://www.youtube.com/watch?v=eOj92mF0-Eo
 
-### 미미미누 — 채널 4곳 · 영상 9개 · 좋아요 합 29.1만 · 평균 좋아요비율 1.1% · 최신 11/20
-- 리트만점자 이진우가 미미미누랑 변호사를 만나면 생기는일ㅋㅋ 라이브 (뉴스냥이, ❤️7.6만) https://www.youtube.com/watch?v=DHYbxaf_87I
-- 미미미누에게 진심인 가톨릭대 #미미미누 #예능 (예능다락방, ❤️5.4만) https://www.youtube.com/watch?v=jsBL7yYjEPU
-- 카투사 출신만 알 수 있는 언어 #미미미누 #예능 (예능다락방, ❤️4.8만) https://www.youtube.com/watch?v=lVqx9RvtWtc
+### 리트 / 만점자 — 채널 4곳 · 영상 5개 · 좋아요 합 20.8만 · 평균 좋아요비율 0.7% · 최신 11/22
+- 리트냥이 검정 노쇼에 세상이 무너진 리트강사 #이진우 #리트 #수능 #예능레전드 #예능 (이슈모음집, ❤️8.7만) https://www.youtube.com/watch?v=yRJ1Bp29jPA
+- 백지연 날카로운 지적에 찐 당황한 리트 만점자ㅋㅋ (예능쟁이, ❤️3.5만) https://www.youtube.com/watch?v=rBq7Pu3-7eA
+- 부정행위 의심으로수능 무효처리 된 학생ㄷㄷ #수능 #리트  #예능레전드 #예능 (이슈모음집, ❤️3.4만) https://www.youtube.com/watch?v=thLarWA7gqw
 
-### 라면 — 채널 4곳 · 영상 4개 · 좋아요 합 2.8만 · 평균 좋아요비율 1.0% · 최신 11/20
-- 도깨비시장 길거리음식 털러갔더니 반응이..🤣 겨울에 뜨끈한 만두 칼국수 오뎅 라면 붕어빵 먹방 (tzuyang쯔양, ❤️1.4만) https://www.youtube.com/watch?v=2nBZemKmx3c
-- SUB)맵칼한 불닭미역탕면에 계란새우초밥 육회연어초밥 먹방! 마요새우까지 라면 꿀조합 Buldak  (문복희 Eat with Boki, ❤️9,303) https://www.youtube.com/watch?v=1cnsQpVzoA4
-- 30대 생산직 여자 퇴근 후 라면에 소주 한잔하러 가맥집에 왔습니다 (술주서주 soju, ❤️2,812) https://www.youtube.com/watch?v=jS099GXVj3o
+### 에이티즈 / ateez — 채널 4곳 · 영상 6개 · 좋아요 합 15.9만 · 평균 좋아요비율 4.9% · 최신 11/21
+- ATEEZ(에이티즈) - '친구 (THANK U)' MV (ATEEZ, ❤️5.9만) https://www.youtube.com/watch?v=4BSexJbNNLY
+- ATEEZ(에이티즈) - ‘UP’ Dance Practice (MATRIX Ver.) (ATEEZ, ❤️2.9만) https://www.youtube.com/watch?v=sLo-xY2g2pE
+- 에이티즈 8명이 본명으로 활동하는 이유 #shorts #아는형님 #에이티즈 (124studio, ❤️2.7만) https://www.youtube.com/watch?v=k_sfxwOuYiI
 
-### 고양이 — 채널 3곳 · 영상 4개 · 좋아요 합 8.7만 · 평균 좋아요비율 0.8% · 최신 11/18
-- 혼자 양치하겠다는 아기 고양이, 엄마 표정 ㅋㅋ #쇼츠 #고양이 (PickLog Lab, ❤️5.1만) https://www.youtube.com/watch?v=sAX3GJkNmhY
-- 집사의 고양이 자랑 #고양이 #고양이쇼츠 (뭘보냥, ❤️1.6만) https://www.youtube.com/watch?v=Q8Yg2NEuxh4
-- 댕댕이와 고양이의 성격 #고양이 #고양이쇼츠 차이 (뭘보냥, ❤️9,815) https://www.youtube.com/watch?v=3IGG29Hr5-8
+### 일본 — 채널 4곳 · 영상 5개 · 좋아요 합 5.7만 · 평균 좋아요비율 1.5% · 최신 11/22
+- 후쿠오카2탄) 일본 최대급 수조가 있는 식당을 털었더니..🤣 대왕 산오징어와 랍스타 초호화 해산물  (tzuyang쯔양, ❤️2.3만) https://www.youtube.com/watch?v=PLPM3TJtWac
+- 일본 편의점털이 먹방 점수매기기🍙🍜🍥🇯🇵 #mukbang (슈기님, ❤️1.3만) https://www.youtube.com/watch?v=eyLYtrJfOgc
+- 일본 꼬치 도전먹방 1등 기록 깨러 일본 날아왔습니다. (히밥heebab, ❤️1.2만) https://www.youtube.com/watch?v=2v9i0n6PqyY
 
-### 여행 — 채널 3곳 · 영상 3개 · 좋아요 합 7.1만 · 평균 좋아요비율 2.1% · 최신 11/21
-- 정일영 교수가 프랑스 여행을 신중히 생각하라는 이유 (아우성, ❤️4.8만) https://www.youtube.com/watch?v=nrrQfMF7IP0
-- [vlog] 제주부터 강원도까지 먹방 브이로그🍴 (With 에이나, 예온)ㅣ제주도 여행・수영장 달리 (Hearts2Hearts, ❤️1.6만) https://www.youtube.com/watch?v=QkglQRtsXCE
-- #한국여행#서울여행#한국일상#한국생활#한국음식#맛집#먹방#KPOP#케이팝#한국드라마 #K드라마 #한 (Unlimited Fun 9911, ❤️5,971) https://www.youtube.com/watch?v=YE9FKATpwO4
+### 강아지 — 채널 4곳 · 영상 4개 · 좋아요 합 2.6만 · 평균 좋아요비율 1.2% · 최신 11/21
+- 예능에 맨날 강아지 나오는 이유 (710house, ❤️1.7만) https://www.youtube.com/watch?v=UTprfbu57kQ
+- 당근 알바로 만난 강아지와 마지막 산책알바 브이로그 (지새기의 인간극장, ❤️4,333) https://www.youtube.com/watch?v=YxwAu5B2mE4
+- 《 새하얀 눈밭 후드 》  밤새 소복이 쌓인 눈 위에 발자국이 찍힌 후드 집업. 인도 패션 브랜드  (bakmulgooan, ❤️3,195) https://www.instagram.com/p/Df9tpv8H5ZY/
 
-### 사쿠란보 — 채널 3곳 · 영상 3개 · 좋아요 합 5.9만 · 평균 좋아요비율 1.7% · 최신 11/18
-- [MV] YENA (최예나)_사쿠란보 (Sakuranbo) : J-POP REMAKE Vol.5 (동네친구 강나미 [Kangnami], ❤️5.1만) https://www.youtube.com/watch?v=S5dTQf2y3iA
-- YENA (최예나) - 사쿠란보｜야외녹음실｜Beyond the Studio｜LIVE (1theK Live - 원더케이 라이브, ❤️5,636) https://www.youtube.com/watch?v=8wdKPH6_YGc
-- [4K] 큐스토로 사쿠란보 MV 만들어봤습니다🍒 (무한반복주의) (한국형 서브컬처, ❤️2,428) https://www.youtube.com/watch?v=3T_P_jIupvU
+### 먹방브이로그 — 채널 4곳 · 영상 4개 · 좋아요 합 1만 · 평균 좋아요비율 1.1% · 최신 11/22
+- 하루종일 먹은 일본 먹방브이로그ㅋㅋ🇯🇵 #mukbang (슈기님, ❤️5,833) https://www.youtube.com/watch?v=yNl9RXelymU
+- 먹방브이로그) 고디바찹쌀떡🍓✨딱 한개!!!!!!!먹방… 짧고굵었음 (고디바찹쌀떡/노티드왁뿌찹쌀떡/노 (가오니의 메뉴판GAONI, ❤️1,920) https://www.youtube.com/watch?v=_Y4jzn_fnwU
+- [해산물편] 혼자가면 얼마나 먹을까?🦐 속초 혼자여행 먹방브이로그 (대게탕, 골뱅이무침, 모녀가리비 (우니의끼니 UNIII, ❤️1,554) https://www.youtube.com/watch?v=rAgeiFcnqYA
 
-### 강아지 — 채널 3곳 · 영상 3개 · 좋아요 합 4.7만 · 평균 좋아요비율 0.9% · 최신 11/18
-- 우리집 강아지🖤  •  •  #강아지 #일상 #짤 #daily #공감 (meongterview_, ❤️2.6만) https://www.instagram.com/p/Df1KFaqGU5N/
-- 예능에 맨날 강아지 나오는 이유 (710house, ❤️1.1만) https://www.youtube.com/watch?v=UTprfbu57kQ
-- 누가 고양이는 차갑다고 함? #강아지 #고양이 #우정 #감동 #동물 #animals (광광우럭따, ❤️9,810) https://www.youtube.com/watch?v=qahTv6dbcj0
+### 서버 — 채널 4곳 · 영상 4개 · 좋아요 합 8,364 · 평균 좋아요비율 1.2% · 최신 11/22
+- 앵무조개 레이스가 열린 서버 야생 생존기 (파이브, ❤️4,167) https://www.youtube.com/watch?v=nLXxKPXsMFc
+- 한국에서 제일 큰 마인크래프트 서버 전쟁에서 혼자 군대 전멸시키기 (익명, ❤️1,592) https://www.youtube.com/watch?v=SlnxzHvxm4g
+- 【 탬탬버린 】 - 태어나서 처음으로 서버에서 장기자랑을 하게 된 나... 토할 것 같아요ㅠㅠㅠㅠ (탬탬버린, ❤️1,484) https://www.youtube.com/watch?v=rPIV-ZxldPg
 
-### 정체 — 채널 3곳 · 영상 3개 · 좋아요 합 4만 · 평균 좋아요비율 0.9% · 최신 11/19
-- 인천공항에서 외국인 통역해주던 7살 꼬마의 정체 (찡한tv, ❤️2.8만) https://www.youtube.com/watch?v=FtsXXftcRBQ
-- 300만 년 전부터 인류가 먹은 음식의 정체 (쭈니, ❤️7,964) https://www.youtube.com/watch?v=846YUDr5u0k
-- 맛있게 먹었는데 정체를 알아버렸다 #shorts #이만기 #백년손님 #장모님 #예능 (아웃사이드스포츠, ❤️4,145) https://www.youtube.com/watch?v=hCdq7aKwtOE
+### 방송 — 채널 3곳 · 영상 4개 · 좋아요 합 33.1만 · 평균 좋아요비율 2.4% · 최신 11/22
+- [#2026MAMA] BABYMONSTER - INTRO + DESERVE + 춤(CHOOM) (M (Mnet K-POP, ❤️16.6만) https://www.youtube.com/watch?v=iIaw6HvS09Y
+- [#2026MAMA] BIGBANG (빅뱅) - BAD + LIVE FAST DIE SLOW + 기 (Mnet K-POP, ❤️10.8만) https://www.youtube.com/watch?v=f0-Oq0kh298
+- 방송에서 편집으로 주작하는 법 (710house, ❤️4.3만) https://www.youtube.com/watch?v=EGBG1uEet-o
 
-### 크림 — 채널 3곳 · 영상 3개 · 좋아요 합 2.7만 · 평균 좋아요비율 2.3% · 최신 11/21
-- 크림 과일소라빵 종류별 먹방!!🍓🫐☁️ #mukbang (슈기님, ❤️1.8만) https://www.youtube.com/watch?v=2fu7GOUubCc
-- 모든 사람이 L을 가져간다면? 🕺 길거리 → 학교 → 회사 → 지하철 → 비행기 → 지구 → 태양계 (pixel.manyak, ❤️7,447) https://www.instagram.com/p/DfwDBTqtTIy/
-- 크림 아님 제가 진짜 바지핏 까다로운데 핏 보장할게요 공두님둘 이상하게 떨어지는 그런 핏아니고 아디 (moraeeae, ❤️1,552) https://www.instagram.com/p/Df_Qkq8PT8N/
+### 요즘 — 채널 3곳 · 영상 3개 · 좋아요 합 9.2만 · 평균 좋아요비율 1.7% · 최신 11/19
+- 바쁜 현대인들의 요즘 기분 (개굴개, ❤️7.4만) https://www.youtube.com/watch?v=pN2rwN17XVQ
+- 요즘 유행하는 꾸덕 마라탕?!! (윤고미, ❤️1.3만) https://www.youtube.com/watch?v=1VFqDAsa4Eg
+- 요즘 부모들이 배워야할 추성훈식 아이 훈육법 #추성훈 #예능레전드 #예능 (이슈모음집, ❤️4,951) https://www.youtube.com/watch?v=VVat12AXe3E
 
-### 음식 — 채널 3곳 · 영상 3개 · 좋아요 합 2.5만 · 평균 좋아요비율 1.3% · 최신 11/19
-- 음식 안 시키고 서비스 요구하는 빌런 #shorts (숏플레이, ❤️1.3만) https://www.youtube.com/watch?v=uJDiY31eYQo
-- 300만 년 전부터 인류가 먹은 음식의 정체 (쭈니, ❤️7,964) https://www.youtube.com/watch?v=846YUDr5u0k
-- 1년만에 돌아온 편의점 먹방🎉 난리난 요즘 신상 음식 피자 핫바 불닭볶음면 NEW Korean Co (쏘영 Ssoyoung, ❤️4,121) https://www.youtube.com/watch?v=jOab4ILGlJc
+### 대왕 — 채널 3곳 · 영상 3개 · 좋아요 합 4만 · 평균 좋아요비율 1.1% · 최신 11/19
+- 후쿠오카2탄) 일본 최대급 수조가 있는 식당을 털었더니..🤣 대왕 산오징어와 랍스타 초호화 해산물  (tzuyang쯔양, ❤️2.3만) https://www.youtube.com/watch?v=PLPM3TJtWac
+- SUB)역대급 4kg 대왕 킹크랩 먹방! 불닭마요 잔뜩 범벅해먹기🦀 갑각류 파티 Giant Buld (문복희 Eat with Boki, ❤️1만) https://www.youtube.com/watch?v=qNe4zpKETUY
+- 기원전 70만년 전🗿 대왕 맘모스 고기에 새알 후라이 먹방 Stone Age Mukbang with (망그러진 곰, ❤️7,174) https://www.youtube.com/watch?v=E4h3L1NfyR4
 
-### 만두 — 채널 3곳 · 영상 3개 · 좋아요 합 2.5만 · 평균 좋아요비율 1.0% · 최신 11/20
-- 도깨비시장 길거리음식 털러갔더니 반응이..🤣 겨울에 뜨끈한 만두 칼국수 오뎅 라면 붕어빵 먹방 (tzuyang쯔양, ❤️1.4만) https://www.youtube.com/watch?v=2nBZemKmx3c
-- ASMR MUKBANG 직접 만든 통삼겹 열라면 김밥 김치 만두 먹방! RAMYEON & KIMBA (GONGSAM TABLE 이공삼, ❤️7,442) https://www.youtube.com/watch?v=CfPIF-b0KM0
-- ASMR MUKBANG| 직접 만든 짜파게티 양념치킨 스팸튀김 만두 먹방 & 레시피 FRIED CH (설기양SULGI, ❤️3,525) https://www.youtube.com/watch?v=orlRMmx5frw
+### 챌린지 — 채널 3곳 · 영상 4개 · 좋아요 합 3.7만 · 평균 좋아요비율 1.1% · 최신 11/21
+- 역대급 웃긴 아기 쿵푸 챌린지 랭킹 TOP5 #랭킹 #쇼츠 #웃긴영상 (랭킹긁, ❤️1.5만) https://www.youtube.com/watch?v=AufPQfQFhsg
+- 역대급 인라인 스케이트 챌린지 랭킹 TOP4 #랭킹 #쇼츠 #웃긴영상 (랭킹강, ❤️9,391) https://www.youtube.com/watch?v=JwRohED-Mfo
+- 역대급 지리는 나선환 챌린지 랭킹 TOP5 #랭킹 #쇼츠 #웃긴영상 (랭킹강, ❤️7,362) https://www.youtube.com/watch?v=x7SkwbG16GQ
 
-### 최고의 — 채널 3곳 · 영상 3개 · 좋아요 합 2.4만 · 평균 좋아요비율 0.8% · 최신 11/20
-- 수능 입시생들의 시험전 최고의 선택 #미미미누 #예능 (예능다락방, ❤️1.4만) https://www.youtube.com/watch?v=XLsJ7PJYAyg
-- 일본 최고의 노잼도시라는 나고야에서 무한먹방기행 - 일본(2) (이자반, ❤️5,981) https://www.youtube.com/watch?v=750j8VHoSkY
-- GTA6 를 모른다면 반드시 봐야합니다 ( 21세기 최고의 명작 게임 ) [1편 풀자막] (김블루, ❤️3,906) https://www.youtube.com/watch?v=oc9GD5NSfzQ
+### 사장님 — 채널 3곳 · 영상 3개 · 좋아요 합 3.5만 · 평균 좋아요비율 1.4% · 최신 11/22
+- 후쿠오카1탄) 62년 전통 교자집에서 저보고 기네스북이래요🤣 사장님도 놀란 라멘 볶음밥 먹방 (tzuyang쯔양, ❤️3.1만) https://www.youtube.com/watch?v=saSUt7EeCgo
+- 알아 1115! 사장님 생일 준비 대작전 (아라하시 타비 ARAHASHI TABI, ❤️2,556) https://www.youtube.com/watch?v=XquY5tYP2eU
+- 무서워요 사장님 왜 웃어요 (수탉, ❤️1,746) https://www.youtube.com/watch?v=bg9WxEh2DIc
 
-### 제가 — 채널 3곳 · 영상 3개 · 좋아요 합 2.2만 · 평균 좋아요비율 0.9% · 최신 11/21
-- 왜요 제가 좀 신나 보여요? (aespa, ❤️1.9만) https://www.youtube.com/watch?v=4oAA6esif9E
-- 크림 아님 제가 진짜 바지핏 까다로운데 핏 보장할게요 공두님둘 이상하게 떨어지는 그런 핏아니고 아디 (moraeeae, ❤️1,552) https://www.instagram.com/p/Df_Qkq8PT8N/
-- 전북 현대가 이렇게 된 이상 제가 나설 수밖에 없네요 (유봉훈, ❤️1,036) https://www.youtube.com/watch?v=MqG8laNDF8M
+### 집에서 — 채널 3곳 · 영상 3개 · 좋아요 합 1.9만 · 평균 좋아요비율 1.4% · 최신 11/22
+- 집에서 삼시세끼~        #시니어 #삶의지혜 #중년 #shorts #부부 #쇼츠 (봉식씨네이웃들, ❤️1.5만) https://www.youtube.com/watch?v=1SrlCa3evsw
+- 집에서 싸게 씨푸드보일 하는법 (Show_Good, ❤️3,185) https://www.youtube.com/watch?v=es4yR1TXp4A
+- *시청 주의* 새로 들어간 집에서 자꾸만 괴상한일이 생겨난다 (SUNBA선바, ❤️1,092) https://www.youtube.com/watch?v=5koS4XHCF2c
 
-### 겨울 — 채널 3곳 · 영상 3개 · 좋아요 합 1.8만 · 평균 좋아요비율 0.8% · 최신 11/20
-- 도깨비시장 길거리음식 털러갔더니 반응이..🤣 겨울에 뜨끈한 만두 칼국수 오뎅 라면 붕어빵 먹방 (tzuyang쯔양, ❤️1.4만) https://www.youtube.com/watch?v=2nBZemKmx3c
-- sub) 별일없이 바쁜 11월 직장인 브이로그ㅣ해물 누룽지탕 20인분 만들기ㅣnew 목디스크 베개ㅣ (deemd 딤디, ❤️2,577) https://www.youtube.com/watch?v=qaYR4nWPjE0
-- [#호동과바다] 방어 철은 이미 왔다🔥 기름 싹 올라온 겨울 대방어 12KG 먹방🐟 (디글 :Diggle, ❤️1,310) https://www.youtube.com/watch?v=4XeXFklRpaI
+### 마지막 — 채널 3곳 · 영상 3개 · 좋아요 합 1.5만 · 평균 좋아요비율 1.0% · 최신 11/21
+- 이마 혈관종 수술 전 마지막 MRI! 집 팔기 전 대청소 대장정의 막...🧹급찐급빠🏃🏻미국 결혼식💐 (김키미kimmy kim, ❤️6,268) https://www.youtube.com/watch?v=sJQvPWLZUOc
+- 당근 알바로 만난 강아지와 마지막 산책알바 브이로그 (지새기의 인간극장, ❤️4,333) https://www.youtube.com/watch?v=YxwAu5B2mE4
+- 마인 부우 마지막 먹방 (아날로그486, ❤️4,175) https://www.youtube.com/watch?v=EM0SUQ5-cOw
 
-### 피자 — 채널 3곳 · 영상 3개 · 좋아요 합 1.6만 · 평균 좋아요비율 1.2% · 최신 11/16
-- ASMR MUKBANG 오지치즈 피자 불닭볶음면 먹방! 치즈스틱 핫도그 치즈 피자 먹방 & 레시피  (GONGSAM TABLE 이공삼, ❤️8,870) https://www.youtube.com/watch?v=HcHHbEF4IjQ
-- 1년만에 돌아온 편의점 먹방🎉 난리난 요즘 신상 음식 피자 핫바 불닭볶음면 NEW Korean Co (쏘영 Ssoyoung, ❤️4,121) https://www.youtube.com/watch?v=jOab4ILGlJc
-- 🏞️부산먹방 vlog 부산여행 vlog🐟 부산 토박이가 말아주는 부산음식 vlog 한잔 하실분?😇먹 (혼술다큐 미짱 lonely mizzang, ❤️2,774) https://www.youtube.com/watch?v=rh10UHWvL-U
+### 미국 — 채널 3곳 · 영상 3개 · 좋아요 합 1.4만 · 평균 좋아요비율 0.8% · 최신 11/20
+- 이마 혈관종 수술 전 마지막 MRI! 집 팔기 전 대청소 대장정의 막...🧹급찐급빠🏃🏻미국 결혼식💐 (김키미kimmy kim, ❤️6,268) https://www.youtube.com/watch?v=sJQvPWLZUOc
+- 미국에서 가족 몰래 야식 먹기(?) (이민정 MJ, ❤️4,094) https://www.youtube.com/watch?v=__MJr3c662M
+- (ENG) 미국 MZ 따라하려다 그냥 돼지 되겠어 | LA 차 먹방🇺🇸🚗 인앤아웃 버거 칠리스 크럼 (할명수, ❤️3,349) https://www.youtube.com/watch?v=uXDJ0TIn7-I
 
-### 소주 — 채널 3곳 · 영상 3개 · 좋아요 합 1.4만 · 평균 좋아요비율 1.3% · 최신 11/16
-- 기름좔좔 대방어에 물회 소주까지! 먹방❤️ #mukbang (슈기님, ❤️9,764) https://www.youtube.com/watch?v=I8nUTt4o8LM
-- 30대 생산직 여자 퇴근 후 라면에 소주 한잔하러 가맥집에 왔습니다 (술주서주 soju, ❤️2,812) https://www.youtube.com/watch?v=jS099GXVj3o
-- [vlog]우울 저리 비켜라.. 🧹(집밥 해먹고 하이디라오 혼밥하기/무생채의 계절🫜/삼순이 정식/수 (김가을, ❤️1,403) https://www.youtube.com/watch?v=NqbLf78wHWQ
+### 찾기 — 채널 3곳 · 영상 3개 · 좋아요 합 1.1만 · 평균 좋아요비율 1.3% · 최신 11/22
+- 천박하다고 손절 당한 사람의 교양 찾기 브이로그 (다인이공, ❤️5,704) https://www.youtube.com/watch?v=Wb7nox2NXYo
+- 100개 터트려 1개만 나온다는 금광석 풍선 찾기 (아오니 AONI, ❤️2,995) https://www.youtube.com/watch?v=33m2oLHjQ7k
+- 시청자분께서 만들어주신 *버튼이 투명한* 버튼 찾기 (YouTube지누, ❤️2,150) https://www.youtube.com/watch?v=74dolXbroCI
 
-### 24시간 — 채널 3곳 · 영상 3개 · 좋아요 합 1.3만 · 평균 좋아요비율 1.3% · 최신 11/20
-- 🇰🇷한국출장 vlogㅣ인플루엔자의 돈 버는 법..💸(쉽지안다)ㅣ역대급 헤메‼️ㅣ라이브커머스 24시간 (여단오_yeodano, ❤️7,348) https://www.youtube.com/watch?v=KVF995STPcw
-- 이사 포기선언! 도쿄에 살지만 원룸에서 절대 안나가는 날것 그대로의 일상 vlog 일본 시즌음식 다 (Tacosama 타코사마, ❤️4,149) https://www.youtube.com/watch?v=i63GvwSSoe8
-- 날것 다 보여주는 상하이 유학생의 24시간 초밀착 브이로그 (ep.6) (와코, ❤️1,979) https://www.youtube.com/watch?v=izxJ-0ebgJ8
+### 부산 — 채널 3곳 · 영상 3개 · 좋아요 합 6,530 · 평균 좋아요비율 0.6% · 최신 11/20
+- 🏞️부산먹방 vlog 부산여행 vlog🐟 부산 토박이가 말아주는 부산음식 vlog 한잔 하실분?😇먹 (혼술다큐 미짱 lonely mizzang, ❤️2,877) https://www.youtube.com/watch?v=rh10UHWvL-U
+- [나혼자산다] 타지에서 만나니 더 반가운 엉아ㅋㅋ 박지현X코쿤 부산 야식 먹방 MBC261113방송 (픽잇 :Pick it, ❤️2,163) https://www.youtube.com/watch?v=MHCYVYt3_gM
+- 20살 때 뱉은 말 지키러 부산 가는 브이로그 (난쟁이성현, ❤️1,490) https://www.youtube.com/watch?v=9DEgY_BiYZs
 
-### 새로운 — 채널 3곳 · 영상 3개 · 좋아요 합 7,263 · 평균 좋아요비율 0.6% · 최신 11/20
-- [SUB] 9평 탈출 그리고 새로운 시작 (민와와, ❤️3,953) https://www.youtube.com/watch?v=uUbyuAdkZWg
-- 도입부 화음부터 소름 돋는 썸데이(Someday) 🎶✨ 무려 17년 만에 재즈풍으로 재탄생한 명곡  (almond_mag, ❤️2,034) https://www.instagram.com/p/Dfy_D4XMOiS/
-- 새로운 신이 하지 말라는 10가지를 전부 어겨봤습니다.. (지류의 삶, ❤️1,276) https://www.youtube.com/watch?v=QPhzQgT2-jU
-
-### 떡볶이 — 채널 3곳 · 영상 3개 · 좋아요 합 6,754 · 평균 좋아요비율 1.0% · 최신 11/16
-- 🏞️부산먹방 vlog 부산여행 vlog🐟 부산 토박이가 말아주는 부산음식 vlog 한잔 하실분?😇먹 (혼술다큐 미짱 lonely mizzang, ❤️2,774) https://www.youtube.com/watch?v=rh10UHWvL-U
-- sub) 별일없이 바쁜 11월 직장인 브이로그ㅣ해물 누룽지탕 20인분 만들기ㅣnew 목디스크 베개ㅣ (deemd 딤디, ❤️2,577) https://www.youtube.com/watch?v=qaYR4nWPjE0
-- [vlog]우울 저리 비켜라.. 🧹(집밥 해먹고 하이디라오 혼밥하기/무생채의 계절🫜/삼순이 정식/수 (김가을, ❤️1,403) https://www.youtube.com/watch?v=NqbLf78wHWQ
-
-### 오랜만에 — 채널 3곳 · 영상 3개 · 좋아요 합 5,471 · 평균 좋아요비율 0.8% · 최신 11/20
-- 오랜만에 힘 좀 썼습니다 (말왕TV, ❤️2,542) https://www.youtube.com/watch?v=w-Q3uG6bLiM
-- 안녕하세요 오랜만에 인사드립니다 (살빼조DietJo, ❤️1,473) https://www.youtube.com/watch?v=hvvQ_b2pU20
-- 오랜만에 온 근본 타워오브헬에서 기사와 팀을 먹고 대결했습니다 ㅋㅋ (집사TV, ❤️1,456) https://www.youtube.com/watch?v=ofhdoLKqsNM
-
-### 멸망전 — 채널 3곳 · 영상 3개 · 좋아요 합 3,581 · 평균 좋아요비율 0.3% · 최신 11/21
-- 멸망전 초읽기?! 결국 세상에 나와선 안될 팀이 완성됐습니다... (클리드, ❤️1,270) https://www.youtube.com/watch?v=H5WEQIvQWFQ
-- 드디어 시작된 멸망전!! 우승 팀 짜보겠습니다｜멸망전EP.01 (저라뎃 JUSTLIKETHAT, ❤️1,219) https://www.youtube.com/watch?v=zHLQ0iITbdk
-- 멸망전 시작..! 3년만에 다시 뭉친 스사교ㅋㅋㅋㅋ (튜브김민교, ❤️1,092) https://www.youtube.com/watch?v=9uSKqKuKGdE
+### 떡볶이 — 채널 3곳 · 영상 3개 · 좋아요 합 5,842 · 평균 좋아요비율 0.9% · 최신 11/16
+- 🏞️부산먹방 vlog 부산여행 vlog🐟 부산 토박이가 말아주는 부산음식 vlog 한잔 하실분?😇먹 (혼술다큐 미짱 lonely mizzang, ❤️2,877) https://www.youtube.com/watch?v=rh10UHWvL-U
+- 집밥 먹방 브이로그🩷드디어 생새우, 새우구이 파티, 어머님 생신상차리기, 떡볶이 냉털! 식탐 썰+불 (요요핑키 YOYOPINKY, ❤️1,538) https://www.youtube.com/watch?v=3c6okcUkv6Y
+- [vlog]우울 저리 비켜라.. 🧹(집밥 해먹고 하이디라오 혼밥하기/무생채의 계절🫜/삼순이 정식/수 (김가을, ❤️1,427) https://www.youtube.com/watch?v=NqbLf78wHWQ
 
 ## B. 좋아요 비율이 유난히 높은 영상 (팬덤 결집, 5% 이상 · 가중치 낮게)
 
-- 애기 체포하겠어🚨 #StrayKids #스트레이키즈 #창빈 #Changbin #한 #HAN #You (Stray Kids, ❤️48.9만, 비율 11.6%) https://www.youtube.com/watch?v=Uqpyhrnu1go
-- ATEEZ(에이티즈) - '친구 (THANK U)' MV (ATEEZ, ❤️5.7만, 비율 10.0%) https://www.youtube.com/watch?v=4BSexJbNNLY
-- ILY Season (ENHYPEN - Topic, ❤️2.4만, 비율 9.2%) https://www.youtube.com/watch?v=rU0bJJpj54I
-- Get funky (JISOO, ❤️39.2만, 비율 8.1%) https://www.youtube.com/watch?v=JeS2Ay3eS8A
-- ATEEZ(에이티즈) - 'UP' MV Reaction (ATEEZ, ❤️2.2만, 비율 8.1%) https://www.youtube.com/watch?v=U2HAzfPbZYk
-- ATEEZ(에이티즈) - ‘UP’ Dance Practice (MATRIX Ver.) (ATEEZ, ❤️2.5만, 비율 7.0%) https://www.youtube.com/watch?v=sLo-xY2g2pE
-- NCT WISH 엔시티 위시 'Everglow+I SPY (2026 MAMA Ver.)' Perfo (NCT WISH, ❤️7,783, 비율 6.6%) https://www.youtube.com/watch?v=Lnc1PonUkDw
-- 나인 투 식스 OST Part.1 산(ATEEZ) - Not Like Lovin’ Me 뮤직비디오🎶 (SBS , ❤️8,303, 비율 6.3%) https://www.youtube.com/watch?v=9t1Mylq0tp0
+- ATEEZ(에이티즈) - '친구 (THANK U)' MV (ATEEZ, ❤️5.9만, 비율 9.8%) https://www.youtube.com/watch?v=4BSexJbNNLY
+- ATEEZ(에이티즈) - 'UP' MV Reaction (ATEEZ, ❤️2.3만, 비율 8.0%) https://www.youtube.com/watch?v=U2HAzfPbZYk
+- Get funky (JISOO, ❤️40.8만, 비율 7.8%) https://www.youtube.com/watch?v=JeS2Ay3eS8A
+- I Want You (ENHYPEN - Topic, ❤️1.9만, 비율 6.9%) https://www.youtube.com/watch?v=dBv5ju-TGZQ
+- ATEEZ(에이티즈) - ‘UP’ Dance Practice (MATRIX Ver.) (ATEEZ, ❤️2.9만, 비율 6.3%) https://www.youtube.com/watch?v=sLo-xY2g2pE
+- 나인 투 식스 OST Part.1 산(ATEEZ) - Not Like Lovin’ Me 뮤직비디오🎶 (SBS , ❤️8,514, 비율 5.9%) https://www.youtube.com/watch?v=9t1Mylq0tp0
 
 ## C. 큰 주제 (대형 이벤트·많은 채널 · 가중치 낮게, 새로운 생활형 각도가 있을 때만)
 
-### gta6 / 스토리 — 채널 7곳 · 영상 7개 · 좋아요 합 2만
-- 감스트 GTA6 오픈런!! 웃긴 장면 모음 ㅋㅋㅋ (감스트GAMST, ❤️5,086) https://www.youtube.com/watch?v=utP5cFNvBs4
-- GTA6 를 모른다면 반드시 봐야합니다 ( 21세기 최고의 명작 게임 ) [1편 풀자막] (김블루, ❤️3,906) https://www.youtube.com/watch?v=oc9GD5NSfzQ
+### 수능 — 채널 8곳 · 영상 9개 · 좋아요 합 27.6만
+- 리트냥이 검정 노쇼에 세상이 무너진 리트강사 #이진우 #리트 #수능 #예능레전드 #예능 (이슈모음집, ❤️8.7만) https://www.youtube.com/watch?v=yRJ1Bp29jPA
+- 수능 풀다가 충격받고 갑자기 웃어버리는 이지영쌤 (오늘마셋(TODAY MINDSET), ❤️6.4만) https://www.youtube.com/watch?v=z58KvgQfz30
 
-### 수능 — 채널 5곳 · 영상 5개 · 좋아요 합 17.3만
-- 리트냥이 검정 노쇼에 세상이 무너진 리트강사 #이진우 #리트 #수능 #예능레전드 #예능 (이슈모음집, ❤️8.4만) https://www.youtube.com/watch?v=yRJ1Bp29jPA
-- 수능 유일 가채점 만점자 차 안에서 반응ㄷㄷ (아싸이드, ❤️4.1만) https://www.youtube.com/watch?v=BL35RFR9oCs
+### gta6 — 채널 6곳 · 영상 6개 · 좋아요 합 2만
+- 감스트 GTA6 오픈런!! 웃긴 장면 모음 ㅋㅋㅋ (감스트GAMST, ❤️7,009) https://www.youtube.com/watch?v=utP5cFNvBs4
+- GTA6 를 모른다면 반드시 봐야합니다 ( 21세기 최고의 명작 게임 ) [1편 풀자막] (김블루, ❤️4,128) https://www.youtube.com/watch?v=oc9GD5NSfzQ
